@@ -80,7 +80,7 @@ class authorizeDialog(BaseDialog):
 	def authOk(self):
 		globalVars.app.say(_("認証完了。ブラウザを閉じてください。"))
 		if self.web != None and self.pid != None and self.web.Exists(self.pid): wx.Process.Kill(self.pid,wx.SIGTERM) #修了要請
-		self.static.SetLabel(_("認証が完了しました。"))
+		self.static.SetLabel(_("認証が完了しました。クラス一覧の更新を行ってください。"))
 		self.bCancel.Disable()
 		self.bStart.SetLabel(_("完了") + "(&F)")
 		self.bStart.Enable()
