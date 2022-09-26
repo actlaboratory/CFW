@@ -51,25 +51,27 @@ class MainView(BaseView):
 			self.app.config.getint(self.identifier,"positionY",50,0)
 		)
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
+		service = self.getService()
+		if not service:
+			return self.empty_list()
+
 		self.getCourses()
 		self.showCourses()
+
 	def getCourses(self):
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			if not response:
-				return
 			self.courses = response.get("courses", [])
 		except HttpError as error:
 			errorDialog(_("認証を実行してください。"), self.hFrame)
 			return
-			return self.courses
+
 	def showCourses(self):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"))
 		self.lst.AppendColumn(_("クラス名"))
 		for i in self.courses:
-			print(i)
 			self.lst.append((i["name"], ))
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
 			self.lst.Focus(0)
@@ -161,6 +163,12 @@ class MainView(BaseView):
 		self.app.credentialManager.refresh()
 		self.app.credentialManager.Authorize()
 		return build('classroom', 'v1', credentials=self.app.credentialManager.credential)
+
+	def empty_list(self):
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
+		self.empty,label = self.creator.virtualListCtrl(_("クラス一覧"))
+		self.empty.AppendColumn(_("クラス名"))
 
 class Menu(BaseMenu):
 	def Apply(self,target):
