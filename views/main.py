@@ -188,6 +188,7 @@ class Menu(BaseMenu):
 		self.RegisterMenuCommand(self.hFileMenu,[
 				"FILE_EXAMPLE",
 				"FILE_ACCOUNT",
+				"file_class_update",
 				"file_update",
 				"file_back",
 				"file_exit"
