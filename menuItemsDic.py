@@ -9,7 +9,8 @@ def getValueString(ref_id):
 	return re.sub("&", "", s)
 
 dic={
-	"file_update":_("最新の情報に更新"),
+	"file_update":_("最新のお知らせを取得"),
+	"file_class_update":_("最新のクラス一覧を取得")
 	"FILE_ACCOUNT":_("アカウントと連携する") + "...",
 	"FILE_EXAMPLE":_("テストダイアログを閲覧")+"...",
 	"file_back":_("クラス選択画面へ戻る"),
