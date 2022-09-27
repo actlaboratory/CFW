@@ -51,9 +51,11 @@ class MainView(BaseView):
 			self.app.config.getint(self.identifier,"positionY",50,0)
 		)
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
-		service = self.getService()
-		if not service:
-			return self.empty_list()
+		self.service = self.getService()
+		if not self.service:
+			self.empty,label = self.creator.virtualListCtrl(_("クラス一覧"))
+			self.empty.AppendColumn(_("クラス名"))
+			return
 
 		self.getCourses()
 		self.showCourses()
@@ -61,10 +63,7 @@ class MainView(BaseView):
 	def getCourses(self):
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			if "courses" in response:
-				self.courses = response.get("courses", [])
-			else:
-				return
+			self.courses = response.get("courses", [])
 		except HttpError as error:
 			errorDialog(_("認証を実行してください。"), self.hFrame)
 			return
@@ -116,6 +115,7 @@ class MainView(BaseView):
 	def showannouncements(self, courseId):
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
+		print(announcements)
 		self.announcements = announcements
 
 		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
@@ -162,20 +162,13 @@ class MainView(BaseView):
 
 	def getService(self):
 		if not self.app.credentialManager.isOK():
-			errorDialog(_("認証を実行してください。"), self.hFrame)
+			errorDialog(_("利用可能なアカウントが見つかりませんでした。認証を実行してください。"), self.hFrame)
 			return
+
 		self.app.credentialManager.refresh()
 		self.app.credentialManager.Authorize()
 		return build('classroom', 'v1', credentials=self.app.credentialManager.credential)
 
-	def empty_list(self):
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), True)
-		self.empty,label = self.creator.virtualListCtrl(_("クラス一覧"))
-		self.empty.AppendColumn(_("クラス名"))
-		return
 
 class Menu(BaseMenu):
 	def Apply(self,target):
@@ -263,9 +256,11 @@ class Events(BaseEvents):
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
 			self.parent.empty.Destroy()
+			if not self.parent.service:
+				return
 			self.parent.getCourses()
 			self.parent.showcourses()
-			return
+
 		if selected == menuItemsStore.getRef("file_back"):
 			self.parent.Clear()
 			self.parent.showCourses()
