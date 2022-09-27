@@ -61,7 +61,10 @@ class MainView(BaseView):
 	def getCourses(self):
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			self.courses = response.get("courses", [])
+			if "courses" in response:
+				self.courses = response.get("courses", [])
+			else:
+				return
 		except HttpError as error:
 			errorDialog(_("認証を実行してください。"), self.hFrame)
 			return
@@ -69,6 +72,7 @@ class MainView(BaseView):
 	def showCourses(self):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"))
 		self.lst.AppendColumn(_("クラス名"))
 		for i in self.courses:
@@ -165,10 +169,13 @@ class MainView(BaseView):
 		return build('classroom', 'v1', credentials=self.app.credentialManager.credential)
 
 	def empty_list(self):
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), True)
 		self.empty,label = self.creator.virtualListCtrl(_("クラス一覧"))
 		self.empty.AppendColumn(_("クラス名"))
+		return
 
 class Menu(BaseMenu):
 	def Apply(self,target):
@@ -236,6 +243,7 @@ class Events(BaseEvents):
 
 			if status==errorCodes.OK:
 				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_ACCOUNT"), False)
+				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), True)
 			elif status == errorCodes.CANCELED_BY_USER:
 				dialog(_("認証結果"),_("キャンセルしました。"))
 			elif status==errorCodes.IO_ERROR:
@@ -252,6 +260,11 @@ class Events(BaseEvents):
 			self.parent.showannouncements(self.courseId)
 			self.parent.announcementList.Focus(0)
 			self.parent.announcementList.Select(0)
+			return
+		if selected == menuItemsStore.getRef("file_class_update"):
+			self.parent.empty.Destroy()
+			self.parent.getCourses()
+			self.parent.showcourses()
 			return
 		if selected == menuItemsStore.getRef("file_back"):
 			self.parent.Clear()
