@@ -53,19 +53,22 @@ class MainView(BaseView):
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
 		self.service = self.getService()
 		if not self.service:
-			self.empty,label = self.creator.virtualListCtrl(_("クラス一覧"))
-			self.empty.AppendColumn(_("クラス名"))
 			return
 
 		self.getCourses()
 		self.showCourses()
 
 	def getCourses(self):
+		service = self.getService()
+		if not service:
+			return
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
+			if not response:
+				return
 			self.courses = response.get("courses", [])
 		except HttpError as error:
-			errorDialog(_("認証を実行してください。"), self.hFrame)
+			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
 			return
 
 	def showCourses(self):
@@ -162,13 +165,12 @@ class MainView(BaseView):
 
 	def getService(self):
 		if not self.app.credentialManager.isOK():
-			errorDialog(_("利用可能なアカウントが見つかりませんでした。認証を実行してください。"), self.hFrame)
+			errorDialog(_("利用可能なアカウントが見つかりませんでした。ファイルメニューから認証を実行してください。"), self.hFrame)
 			return
 
 		self.app.credentialManager.refresh()
 		self.app.credentialManager.Authorize()
 		return build('classroom', 'v1', credentials=self.app.credentialManager.credential)
-
 
 class Menu(BaseMenu):
 	def Apply(self,target):
@@ -255,16 +257,14 @@ class Events(BaseEvents):
 			self.parent.announcementList.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
-			self.parent.empty.Destroy()
-			if not self.parent.service:
-				return
 			self.parent.getCourses()
-			self.parent.showcourses()
+			self.parent.showCourses()
 
 		if selected == menuItemsStore.getRef("file_back"):
 			self.parent.Clear()
 			self.parent.showCourses()
 			self.parent.lst.Focus(0)
+			self.parent.lst.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_exit"):
 			self.parent.hFrame.Close()
