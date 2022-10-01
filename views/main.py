@@ -64,8 +64,6 @@ class MainView(BaseView):
 			return
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			if not response:
-				return
 			self.courses = response.get("courses", [])
 		except HttpError as error:
 			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
@@ -90,7 +88,6 @@ class MainView(BaseView):
 		self.topics = response.get("topic", [])
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
-		print(self.workList)
 		self.Clear()
 		self.tree, label = self.creator.treeCtrl("課題と資料")
 		root = self.tree.AddRoot(_("課題"))
@@ -166,6 +163,7 @@ class MainView(BaseView):
 	def getService(self):
 		if not self.app.credentialManager.isOK():
 			errorDialog(_("利用可能なアカウントが見つかりませんでした。ファイルメニューから認証を実行してください。"), self.hFrame)
+			self.dummy, empty = self.creator.virtualListCtrl(_("クラス一覧"))
 			return
 
 		self.app.credentialManager.refresh()
