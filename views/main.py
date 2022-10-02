@@ -51,19 +51,24 @@ class MainView(BaseView):
 			self.app.config.getint(self.identifier,"positionY",50,0)
 		)
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
-		service = self.getService()
-		if not service:
-			return self.empty_list()
+		self.courses = []
+		self.service = self.getService()
+		if not self.service:
+			return
 
 		self.getCourses()
 		self.showCourses()
 
 	def getCourses(self):
+		service = self.getService()
+		if not service:
+			return
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			self.courses = response.get("courses", [])
+			if response["courses"]:
+				self.courses = response.get("courses", [])
 		except HttpError as error:
-			errorDialog(_("認証を実行してください。"), self.hFrame)
+			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
 			return
 
 	def showCourses(self):
@@ -84,7 +89,6 @@ class MainView(BaseView):
 		self.topics = response.get("topic", [])
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
-		print(self.workList)
 		self.Clear()
 		self.tree, label = self.creator.treeCtrl("課題と資料")
 		root = self.tree.AddRoot(_("課題"))
@@ -112,6 +116,7 @@ class MainView(BaseView):
 	def showannouncements(self, courseId):
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
+		print(announcements)
 		self.announcements = announcements
 
 		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
@@ -158,17 +163,13 @@ class MainView(BaseView):
 
 	def getService(self):
 		if not self.app.credentialManager.isOK():
-			errorDialog(_("認証を実行してください。"), self.hFrame)
+			errorDialog(_("利用可能なアカウントが見つかりませんでした。ファイルメニューから認証を実行してください。"), self.hFrame)
+			self.showCourses()
 			return
+
 		self.app.credentialManager.refresh()
 		self.app.credentialManager.Authorize()
 		return build('classroom', 'v1', credentials=self.app.credentialManager.credential)
-
-	def empty_list(self):
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
-		self.empty,label = self.creator.virtualListCtrl(_("クラス一覧"))
-		self.empty.AppendColumn(_("クラス名"))
 
 class Menu(BaseMenu):
 	def Apply(self,target):
@@ -236,6 +237,8 @@ class Events(BaseEvents):
 
 			if status==errorCodes.OK:
 				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_ACCOUNT"), False)
+				return
+
 			elif status == errorCodes.CANCELED_BY_USER:
 				dialog(_("認証結果"),_("キャンセルしました。"))
 			elif status==errorCodes.IO_ERROR:
@@ -253,10 +256,16 @@ class Events(BaseEvents):
 			self.parent.announcementList.Focus(0)
 			self.parent.announcementList.Select(0)
 			return
+		if selected == menuItemsStore.getRef("file_class_update"):
+			self.parent.lst.Destroy()
+			self.parent.getCourses()
+			self.parent.showCourses()
+			return
 		if selected == menuItemsStore.getRef("file_back"):
 			self.parent.Clear()
 			self.parent.showCourses()
 			self.parent.lst.Focus(0)
+			self.parent.lst.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_exit"):
 			self.parent.hFrame.Close()

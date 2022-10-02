@@ -58,7 +58,7 @@ class CredentialManager:
 				f.write(credentials.to_json())
 		except:
 			return errorCodes.IO_ERROR
-		self.credentials=credentials
+		self.credential=credentials
 		return errorCodes.OK
 
 	def refresh(self):
