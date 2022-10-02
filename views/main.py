@@ -51,6 +51,7 @@ class MainView(BaseView):
 			self.app.config.getint(self.identifier,"positionY",50,0)
 		)
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
+		self.courses = []
 		self.service = self.getService()
 		if not self.service:
 			return
@@ -73,7 +74,6 @@ class MainView(BaseView):
 	def showCourses(self):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"))
 		self.lst.AppendColumn(_("クラス名"))
 		for i in self.courses:
@@ -164,7 +164,7 @@ class MainView(BaseView):
 	def getService(self):
 		if not self.app.credentialManager.isOK():
 			errorDialog(_("利用可能なアカウントが見つかりませんでした。ファイルメニューから認証を実行してください。"), self.hFrame)
-			self.dummy, empty = self.creator.virtualListCtrl(_("クラス一覧"))
+			self.showCourses()
 			return
 
 		self.app.credentialManager.refresh()
@@ -237,7 +237,8 @@ class Events(BaseEvents):
 
 			if status==errorCodes.OK:
 				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_ACCOUNT"), False)
-				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), True)
+				return
+
 			elif status == errorCodes.CANCELED_BY_USER:
 				dialog(_("認証結果"),_("キャンセルしました。"))
 			elif status==errorCodes.IO_ERROR:
@@ -256,10 +257,10 @@ class Events(BaseEvents):
 			self.parent.announcementList.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
-			self.parent.dummy.Destroy()
+			self.parent.lst.Destroy()
 			self.parent.getCourses()
 			self.parent.showCourses()
-
+			return
 		if selected == menuItemsStore.getRef("file_back"):
 			self.parent.Clear()
 			self.parent.showCourses()
