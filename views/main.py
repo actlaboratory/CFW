@@ -64,7 +64,8 @@ class MainView(BaseView):
 			return
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			self.courses = response.get("courses", [])
+			if response["courses"]:
+				self.courses = response.get("courses", [])
 		except HttpError as error:
 			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
 			return
@@ -255,6 +256,7 @@ class Events(BaseEvents):
 			self.parent.announcementList.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
+			self.parent.dummy.Destroy()
 			self.parent.getCourses()
 			self.parent.showCourses()
 
