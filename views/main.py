@@ -114,20 +114,35 @@ class MainView(BaseView):
 					self.tree.AppendItem(node, i["link"]["title"], data=urls)
 
 	def showannouncements(self, courseId):
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
-		print(announcements)
 		self.announcements = announcements
 
 		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
 		self.announcementList.AppendColumn(_("お知らせ"))
 		self.announcementList.AppendColumn(_("作成日時"))
 		self.announcementList.AppendColumn(_("更新者"))
-		for i in announcements:
-			self.text = i["text"]
-			updatetime = i["updateTime"]
+		for announcement in announcements:
+			self.text = announcement["text"]
+			updatetime = announcement["updateTime"]
 			#name = self.userCache.get(i["creatorUserId"], courseId)
 			self.announcementList.append((self.text, updatetime))
+			self.title = {}
+			self.link = {}
+			self.Files = {}
+			self.urls = {}
+			if "materials" in announcement:
+				for i in announcement["materials"]:
+					if "driveFile" in i:
+						if "alternateLink" in i["driveFile"]["driveFile"]:
+							self.files = {"alternate":i["driveFile"]["driveFile"]["alternateLink"]}
+						if "title" in i["driveFile"]["driveFile"]:
+							self.title = {"title":i["driveFile"]["driveFile"]["title"]}
+					if "link" in i:
+						self.link = {"url":i["link"]["url"]}
+						self.name = {"pageTitle":i["link"]["title"]}
+
 		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
 
