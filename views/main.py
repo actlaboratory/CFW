@@ -134,11 +134,12 @@ class MainView(BaseView):
 				for i in announcement["materials"]:
 					if "driveFile" in i:
 						if "alternateLink" in i["driveFile"]["driveFile"]:
-							file = {"alternate":i["driveFile"]["driveFile"]["alternateLink"]}
+							file = {"alternate":i["driveFile"]["driveFile"]["alternateLink"],"name":i["driveFile"]["driveFile"]["title"]}
 					if "link" in i:
-						link = {"url":i["link"]["url"]}
+						link = {"alternate":i["link"]["url"],"name":i["link"]["title"]}
 						data = [file,link]
 						files = [data]
+						print(files)
 
 		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
