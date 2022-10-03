@@ -128,24 +128,27 @@ class MainView(BaseView):
 			updatetime = announcement["updateTime"]
 			#name = self.userCache.get(i["creatorUserId"], courseId)
 			self.announcementList.append((self.text, updatetime))
-			self.title = {}
-			self.link = {}
-			self.Files = {}
-			self.urls = {}
+			title = {}
+			link = {}
+			Files = {}
+			name = {}
 			if "materials" in announcement:
 				for i in announcement["materials"]:
 					if "driveFile" in i:
 						if "alternateLink" in i["driveFile"]["driveFile"]:
-							self.files = {"alternate":i["driveFile"]["driveFile"]["alternateLink"]}
+							files = {"alternate":i["driveFile"]["driveFile"]["alternateLink"]}
 						if "title" in i["driveFile"]["driveFile"]:
-							self.title = {"title":i["driveFile"]["driveFile"]["title"]}
+							title = {"title":i["driveFile"]["driveFile"]["title"]}
 					if "link" in i:
-						self.link = {"url":i["link"]["url"]}
-						self.name = {"pageTitle":i["link"]["title"]}
+						link = {"url":i["link"]["url"]}
+						name = {"pageTitle":i["link"]["title"]}
+						self.list = [files,title,name,link]
+						print(list[2])
+						if not list:
+							return
 
 		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
-
 	def tempFiles(self, courseId):
 		response = self.getService().courses().courseWorkMaterials().list(courseId=courseId).execute()
 		files = response.get("courseWorkMaterial", [])
