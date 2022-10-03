@@ -411,4 +411,3 @@ class Events(BaseEvents):
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
 		self.parent.announcementList.PopupMenu(context, event)
-
