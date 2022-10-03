@@ -123,13 +123,15 @@ class MainView(BaseView):
 		self.announcementList.AppendColumn(_("お知らせ"))
 		self.announcementList.AppendColumn(_("作成日時"))
 		self.announcementList.AppendColumn(_("更新者"))
+		self.announcementData = []
 		for announcement in announcements:
 			self.text = announcement["text"]
 			updatetime = announcement["updateTime"]
 			#name = self.userCache.get(i["creatorUserId"], courseId)
 			self.announcementList.append((self.text, updatetime))
-			link = {}
-			Files = {}
+			materials = []
+			materials.append(file)
+			materials.append(link)
 			if "materials" in announcement:
 				for i in announcement["materials"]:
 					if "driveFile" in i:
@@ -137,9 +139,8 @@ class MainView(BaseView):
 							file = {"alternate":i["driveFile"]["driveFile"]["alternateLink"],"name":i["driveFile"]["driveFile"]["title"]}
 					if "link" in i:
 						link = {"alternate":i["link"]["url"],"name":i["link"]["title"]}
-						data = [file,link]
-						files = [data]
-						print(files)
+						self.announcementData.append(materials)
+						print(self.announcementData)
 
 		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
