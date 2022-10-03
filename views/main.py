@@ -135,9 +135,9 @@ class MainView(BaseView):
 					if "driveFile" in i:
 						if "alternateLink" in i["driveFile"]["driveFile"]:
 							file = {"alternate":i["driveFile"]["driveFile"]["alternateLink"],"name":i["driveFile"]["driveFile"]["title"]}
+							materials.append(file)
 					if "link" in i:
 						link = {"alternate":i["link"]["url"],"name":i["link"]["title"]}
-						materials.append(file)
 						materials.append(link)
 			self.announcementData.append(materials)
 
