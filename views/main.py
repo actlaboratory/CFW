@@ -310,6 +310,7 @@ class Events(BaseEvents):
 		if selected <= constants.MENU_URL_COPY:
 			winsound.Beep(550, 750)
 			webbrowser.open(self.i)
+			return
 
 	def setKeymap(self, identifier,ttl, keymap=None,filter=None):
 		if keymap:
