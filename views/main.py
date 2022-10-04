@@ -129,16 +129,20 @@ class MainView(BaseView):
 			updatetime = announcement["updateTime"]
 			#name = self.userCache.get(i["creatorUserId"], courseId)
 			self.announcementList.append((self.text, updatetime))
+			#添付ファイルと一緒に投稿されたお知らせへの対応
 			materials = []
 			if "materials" in announcement:
 				for i in announcement["materials"]:
 					if "driveFile" in i:
 						if "alternateLink" in i["driveFile"]["driveFile"]:
+							#driveFileのalternatelinkやtitleなどを辞書に格納
 							file = {"alternate":i["driveFile"]["driveFile"]["alternateLink"],"name":i["driveFile"]["driveFile"]["title"]}
+							#お知らせ一つに付き一つのリストに格納しているので先程作ったからのmaterialsにアペンドして辞書が入ったリストを作る
 							materials.append(file)
 					if "link" in i:
 						link = {"alternate":i["link"]["url"],"name":i["link"]["title"]}
 						materials.append(link)
+						#辞書が入ったリストを格納するためのリストを作る
 			self.announcementData.append(materials)
 
 		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
@@ -400,8 +404,6 @@ class Events(BaseEvents):
 		text = self.parent.announcementList.GetItemText(focus, col=0)
 		urlLists = re.findall(r"https?://[\w/:%#\$&\?\(\)~\.=\+\-]+", text)
 		self.urlLists = urlLists
-		material = self.parent.announcementData
-		self.material = material
 		context = wx.Menu()
 		openSubMenu = wx.Menu()
 		copySubMenu = wx.Menu()
@@ -414,8 +416,6 @@ class Events(BaseEvents):
 			self.j = j
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
-		for k,l in zip(material, range(len(material))):
-			self.k = k
-			self.l = l
-			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k)
+		for k,l in zip(self.parent.announcementData, range(len(self.parent.announcementData))):
+			print(k)
 		self.parent.announcementList.PopupMenu(context, event)
