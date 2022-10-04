@@ -405,16 +405,17 @@ class Events(BaseEvents):
 		context = wx.Menu()
 		openSubMenu = wx.Menu()
 		copySubMenu = wx.Menu()
-		tempFileOpenSubMenu = wx.Menu()
+		tmp= wx.Menu()
 		self.parent.menu.RegisterMenuCommand(context,"url_data", subMenu=openSubMenu)
 		self.parent.menu.RegisterMenuCommand(context, "url_copy",subMenu=copySubMenu)
-		self.parent.menu.RegisterMenuCommand(context, "tempFile_open", subMenu=tempFileOpenSubMenu)
+		self.parent.menu.RegisterMenuCommand(context, "tempFile_open", subMenu=tmp)
 		for i,j in zip(urlLists, range(len(urlLists))):
 			self.i = i
 			self.j = j
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
-		for k in zip(len(material)):
+		for k,l in zip(material, range(len(material))):
 			self.k = k
-			tempFileOpenSubMenu.Append(constants.menu_material_open + k)
+			self.l = l
+			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k)
 		self.parent.announcementList.PopupMenu(context, event)
