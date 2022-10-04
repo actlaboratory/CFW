@@ -416,6 +416,8 @@ class Events(BaseEvents):
 			self.j = j
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
-		for k,l in zip(self.parent.announcementData, range(len(self.parent.announcementData))):
-			print(k)
+			#現在FOCUSがあたっているインデックス番号をfocusに代入しているので、これをannouncement[]に指定してfor文を回す
+		for k,l in zip(self.parent.announcementData[focus], range(len(self.parent.announcementData))):
+			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
+			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
 		self.parent.announcementList.PopupMenu(context, event)
