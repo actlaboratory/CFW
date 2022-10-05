@@ -241,6 +241,7 @@ class Events(BaseEvents):
 			return
 
 		selected=event.GetId()#メニュー識別しの数値が出る
+		print(selected)
 		if selected==menuItemsStore.getRef("FILE_EXAMPLE"):
 			d = sample.Dialog()
 			d.Initialize()
@@ -304,6 +305,10 @@ class Events(BaseEvents):
 			d = versionDialog.dialog()
 			d.Initialize()
 			r = d.Show()
+		if selected >= constants.MENU_MATERIAL_OPEN:
+			print(self.material)
+			#webbrowser.open(self.alternate)
+			return
 		if selected >= constants.MENU_URL_COPY:
 			pyperclip.copy(self.i)
 			dialog(_("url"),_("リンク先のコピーが完了しました。"))
@@ -413,11 +418,11 @@ class Events(BaseEvents):
 		self.parent.menu.RegisterMenuCommand(context, "tempFile_open", subMenu=tmp)
 		for i,j in zip(urlLists, range(len(urlLists))):
 			self.i = i
-			self.j = j
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
-			#現在FOCUSがあたっているインデックス番号をfocusに代入しているので、これをannouncement[]に指定してfor文を回す
+			#現在FOCUSがあたっているインデックス番号をfocusに代入しているので、これをannouncementData[]に指定してfor文を回す
 		for k,l in zip(self.parent.announcementData[focus], range(len(self.parent.announcementData))):
 			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
 			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
+			self.material = k["alternate"]
 		self.parent.announcementList.PopupMenu(context, event)
