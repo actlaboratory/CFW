@@ -306,16 +306,16 @@ class Events(BaseEvents):
 			d.Initialize()
 			r = d.Show()
 		if selected >= constants.MENU_MATERIAL_OPEN:
-			print(self.material)
-			#webbrowser.open(self.alternate)
 			return
 		if selected >= constants.MENU_URL_COPY:
-			pyperclip.copy(self.i)
+			obj = event.GetEventObject()
+			pyperclip.copy(obj.GetLabel(selected))
 			dialog(_("url"),_("リンク先のコピーが完了しました。"))
 			return
 		if selected <= constants.MENU_URL_COPY:
 			winsound.Beep(550, 750)
-			webbrowser.open(self.i)
+			obj = event.GetEventObject()
+			webbrowser.open(obj.GetLabel(selected))
 			return
 
 	def setKeymap(self, identifier,ttl, keymap=None,filter=None):
