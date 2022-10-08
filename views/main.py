@@ -304,13 +304,21 @@ class Events(BaseEvents):
 			d = versionDialog.dialog()
 			d.Initialize()
 			r = d.Show()
+<<<<<<< Updated upstream
+=======
+		if selected >= constants.MENU_MATERIAL_OPEN:
+			return
+>>>>>>> Stashed changes
 		if selected >= constants.MENU_URL_COPY:
-			pyperclip.copy(self.i)
+			obj = event.GetEventObject()
+			pyperclip.copy(obj.GetLabel(selected))
 			dialog(_("url"),_("リンク先のコピーが完了しました。"))
 			return
 		if selected <= constants.MENU_URL_COPY:
 			winsound.Beep(550, 750)
-			webbrowser.open(self.i)
+			obj = event.GetEventObject()
+			print(obj)
+			webbrowser.open(obj.GetLabel(selected))
 			return
 
 	def setKeymap(self, identifier,ttl, keymap=None,filter=None):
@@ -416,8 +424,13 @@ class Events(BaseEvents):
 			self.j = j
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
+<<<<<<< Updated upstream
 			#現在FOCUSがあたっているインデックス番号をfocusに代入しているので、これをannouncement[]に指定してfor文を回す
+=======
+			#添付ファイルが含まれたお知らせとインデックス番号を取得
+>>>>>>> Stashed changes
 		for k,l in zip(self.parent.announcementData[focus], range(len(self.parent.announcementData))):
+			print(l)
 			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
 			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
 		self.parent.announcementList.PopupMenu(context, event)
