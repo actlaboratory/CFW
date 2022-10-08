@@ -306,6 +306,11 @@ class Events(BaseEvents):
 			d.Initialize()
 			r = d.Show()
 		if selected >= constants.MENU_MATERIAL_OPEN:
+			obj = event.GetEventObject()
+			data = obj.GetLabel(selected)
+			focusedItem = self.focus
+			print(self.parent.announcementData[focusedItem])
+			#webbrowser.open(data[self.parent.announcementData])
 			return
 		if selected >= constants.MENU_URL_COPY:
 			obj = event.GetEventObject()
@@ -404,6 +409,7 @@ class Events(BaseEvents):
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
+		self.focus = focus
 		if focus < 0:
 			return
 		text = self.parent.announcementList.GetItemText(focus, col=0)
@@ -424,5 +430,4 @@ class Events(BaseEvents):
 		for k,l in zip(self.parent.announcementData[focus], range(len(self.parent.announcementData))):
 			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
 			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
-			self.material = k["alternate"]
 		self.parent.announcementList.PopupMenu(context, event)
