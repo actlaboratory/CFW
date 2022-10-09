@@ -114,19 +114,19 @@ class MainView(BaseView):
 					urls = {"url":i["link"]["url"]}
 					self.tree.AppendItem(node, i["link"]["title"], data=urls)
 
-	def getannouncements(self, courseId):
+	def announcementListCtrl(self):
+		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
+		self.announcementList.AppendColumn(_("お知らせ"))
+		self.announcementList.AppendColumn(_("作成日時"))
+		self.announcementList.AppendColumn(_("更新者"))
+
+	def showannouncements(self, courseId):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
 		self.announcements = announcements
 		if not announcements:
 			return
-
-	def showannouncements(self):
-		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
-		self.announcementList.AppendColumn(_("お知らせ"))
-		self.announcementList.AppendColumn(_("作成日時"))
-		self.announcementList.AppendColumn(_("更新者"))
 		self.announcementData = []
 		for announcement in self.announcements:
 			self.text = announcement["text"]
@@ -181,7 +181,6 @@ class MainView(BaseView):
 
 		info = self.tree.GetRootItem()
 		self.tree.SetFocus()
-		self.tree.ExpandAll()
 		self.tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.events.alternate)
 		self.DSC, label = self.creator.inputbox(_("説明"), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_PROCESS_ENTER)
 		self.tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.events.onWorkSelected)
@@ -277,10 +276,7 @@ class Events(BaseEvents):
 			return
 		if selected == menuItemsStore.getRef("file_update"):
 			self.parent.announcementList.Destroy()
-			self.parent.getannouncements(self.courseId)
-			self.parent.showannouncements()
-			self.parent.announcementList.Focus(0)
-			self.parent.announcementList.Select(0)
+			self.parent.showannouncements(self.courseId)
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
 			self.parent.lst.Destroy()
@@ -372,9 +368,9 @@ class Events(BaseEvents):
 			return
 		self.courseId = self.parent.courses[event.GetIndex()]["id"]
 		self.parent.showTopics(self.courseId)
-		self.parent.getannouncements(self.courseId)
+		self.parent.announcementListCtrl()
+		self.parent.showannouncements(self.courseId)
 		self.parent.announcementCreateButton()
-		self.parent.showannouncements()
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 
