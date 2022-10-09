@@ -241,7 +241,6 @@ class Events(BaseEvents):
 			return
 
 		selected=event.GetId()#メニュー識別しの数値が出る
-		print(selected)
 		if selected==menuItemsStore.getRef("FILE_EXAMPLE"):
 			d = sample.Dialog()
 			d.Initialize()
@@ -308,8 +307,8 @@ class Events(BaseEvents):
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
 			data = obj.GetLabel(selected)
-			focusedItem = self.focus
-			print(self.parent.announcementData[focusedItem])
+			focusedItem = self.parent.announcementData[self.focus]
+			print(i)
 			#webbrowser.open(data[self.parent.announcementData])
 			return
 		if selected >= constants.MENU_URL_COPY:
@@ -426,7 +425,7 @@ class Events(BaseEvents):
 			self.i = i
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
-			#現在FOCUSがあたっているインデックス番号をfocusに代入しているので、これをannouncementData[]に指定してfor文を回す
+			#アナウンスメントデーターをお知らせ分繰り返す
 		for k,l in zip(self.parent.announcementData[focus], range(len(self.parent.announcementData))):
 			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
 			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
