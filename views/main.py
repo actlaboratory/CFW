@@ -142,6 +142,9 @@ class MainView(BaseView):
 					if "link" in i:
 						link = {"alternate":i["link"]["url"],"name":i["link"]["title"]}
 						materials.append(link)
+					if "youtubeVideo"in i:
+						videos = {"alternate":i["youtubeVideo"]["alternateLink"],"name":i["youtubeVideo"]["title"]}
+						materials.append(videos)
 						#辞書が入ったリストを格納するためのリストを作る
 			self.announcementData.append(materials)
 
@@ -305,6 +308,9 @@ class Events(BaseEvents):
 			d.Initialize()
 			r = d.Show()
 		if selected >= constants.MENU_MATERIAL_OPEN:
+			obj = event.GetEventObject()
+			index = (selected - 12000)
+			webbrowser.open(self.parent.announcementData[self.focus][index]["alternate"])
 			return
 		if selected >= constants.MENU_URL_COPY:
 			obj = event.GetEventObject()
@@ -404,6 +410,7 @@ class Events(BaseEvents):
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
+		self.focus = focus
 		if focus < 0:
 			return
 		text = self.parent.announcementList.GetItemText(focus, col=0)
