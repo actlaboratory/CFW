@@ -79,8 +79,8 @@ class MainView(BaseView):
 		for i in self.courses:
 			self.lst.append((i["name"], ))
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
-			self.lst.Focus(0)
-			self.lst.Select(0)
+		self.lst.Focus(0)
+		self.lst.Select(0)
 
 	def showTopics(self, courseId):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), True)
