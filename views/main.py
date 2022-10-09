@@ -305,6 +305,9 @@ class Events(BaseEvents):
 			d.Initialize()
 			r = d.Show()
 		if selected >= constants.MENU_MATERIAL_OPEN:
+			obj = event.GetEventObject()
+			index = (selected - 12000)
+			webbrowser.open(self.parent.announcementData[self.focus][index]["alternate"])
 			return
 		if selected >= constants.MENU_URL_COPY:
 			obj = event.GetEventObject()
@@ -314,7 +317,6 @@ class Events(BaseEvents):
 		if selected <= constants.MENU_URL_COPY:
 			winsound.Beep(550, 750)
 			obj = event.GetEventObject()
-			print(obj)
 			webbrowser.open(obj.GetLabel(selected))
 			return
 
@@ -404,6 +406,7 @@ class Events(BaseEvents):
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
+		self.focus = focus
 		if focus < 0:
 			return
 		text = self.parent.announcementList.GetItemText(focus, col=0)
@@ -420,7 +423,7 @@ class Events(BaseEvents):
 			self.i = i
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
 			copySubMenu.Append(constants.MENU_URL_COPY + j,i)
-			#添付ファイルが含まれたお知らせとインデックス番号を取得
+			#アナウンスメントデーターをお知らせ分繰り返す
 		for k,l in zip(self.parent.announcementData[focus], range(len(self.parent.announcementData))):
 			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
 			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
