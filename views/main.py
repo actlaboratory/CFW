@@ -74,8 +74,8 @@ class MainView(BaseView):
 	def showCourses(self):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
-		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"))
-		self.lst.AppendColumn(_("クラス名"))
+		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
+		self.lst.AppendColumn(_("クラス名"), width=600)
 		for i in self.courses:
 			self.lst.append((i["name"], ))
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
@@ -89,8 +89,8 @@ class MainView(BaseView):
 		self.topics = response.get("topic", [])
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
-		self.Clear()
-		self.tree, label = self.creator.treeCtrl("課題と資料")
+		self.Clear(20)
+		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(_("課題"))
 		for topic in self.topics:
 			node = self.tree.AppendItem(root, topic["name"], )
@@ -119,10 +119,10 @@ class MainView(BaseView):
 		announcements = response.get("announcements", [])
 		self.announcements = announcements
 
-		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
-		self.announcementList.AppendColumn(_("お知らせ"))
-		self.announcementList.AppendColumn(_("作成日時"))
-		self.announcementList.AppendColumn(_("更新者"))
+		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"), proportion=1, sizerFlag=wx.EXPAND)
+		self.announcementList.AppendColumn(_("お知らせ"), width=500)
+		self.announcementList.AppendColumn(_("作成日時"), width=300)
+		self.announcementList.AppendColumn(_("更新者"), width=200)
 		self.announcementData = []
 		for announcement in announcements:
 			self.text = announcement["text"]
@@ -148,7 +148,7 @@ class MainView(BaseView):
 						#辞書が入ったリストを格納するためのリストを作る
 			self.announcementData.append(materials)
 
-		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
+		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog, sizerFlag=wx.ALIGN_RIGHT)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
 	def tempFiles(self, courseId):
 		response = self.getService().courses().courseWorkMaterials().list(courseId=courseId).execute()
@@ -368,6 +368,8 @@ class Events(BaseEvents):
 		self.parent.showannouncements(self.courseId)
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
+		self.parent.creator.GetPanel().Layout()
+
 
 	def alternate(self, event):
 		link = self.parent.tree.GetItemData(event.GetItem())
