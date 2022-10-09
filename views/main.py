@@ -306,10 +306,8 @@ class Events(BaseEvents):
 			r = d.Show()
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
-			data = obj.GetLabel(selected)
-			focusedItem = self.parent.announcementData[self.focus]
-			print(i)
-			#webbrowser.open(data[self.parent.announcementData])
+			label = obj.GetLabel(selected)
+			data = self.parent.announcementData[label]
 			return
 		if selected >= constants.MENU_URL_COPY:
 			obj = event.GetEventObject()
