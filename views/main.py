@@ -115,10 +115,10 @@ class MainView(BaseView):
 					self.tree.AppendItem(node, i["link"]["title"], data=urls)
 
 	def announcementListCtrl(self):
-		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"))
-		self.announcementList.AppendColumn(_("お知らせ"))
-		self.announcementList.AppendColumn(_("作成日時"))
-		self.announcementList.AppendColumn(_("更新者"))
+		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"), proportion=1, sizerFlag=wx.EXPAND)
+		self.announcementList.AppendColumn(_("お知らせ"), width=500)
+		self.announcementList.AppendColumn(_("作成日時"), width=300)
+		self.announcementList.AppendColumn(_("更新者"), width=200)
 
 	def showannouncements(self, courseId):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
@@ -128,10 +128,6 @@ class MainView(BaseView):
 		if not announcements:
 			return
 
-		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"), proportion=1, sizerFlag=wx.EXPAND)
-		self.announcementList.AppendColumn(_("お知らせ"), width=500)
-		self.announcementList.AppendColumn(_("作成日時"), width=300)
-		self.announcementList.AppendColumn(_("更新者"), width=200)
 		self.announcementData = []
 		for announcement in self.announcements:
 			self.text = announcement["text"]
@@ -156,7 +152,6 @@ class MainView(BaseView):
 						materials.append(videos)
 						#辞書が入ったリストを格納するためのリストを作る
 			self.announcementData.append(materials)
-		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog, sizerFlag=wx.ALIGN_RIGHT)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
 
 	def announcementCreateButton(self):
