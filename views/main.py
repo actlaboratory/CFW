@@ -90,13 +90,9 @@ class MainView(BaseView):
 		print(self.topics)
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
-<<<<<<< HEAD
-		self.Clear()
-		self.tree, label = self.creator.treeCtrl("課題と資料")
-		root = self.tree.AddRoot(_("授業"))
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
-		root = self.tree.AddRoot(_("課題"))
+		root = self.tree.AddRoot(_("授業"))
 		for topic in self.topics:
 			node = self.tree.AppendItem(root, topic["name"], )
 		for work in self.workList:
