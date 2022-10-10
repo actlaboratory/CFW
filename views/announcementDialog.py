@@ -33,7 +33,7 @@ class dialog(baseDialog.BaseDialog):
         footerCreator = ViewCreator.ViewCreator(self.viewMode, self.panel, self.sizer, style=wx.ALIGN_RIGHT | wx.ALL, margin=20)
         self.okBtn = footerCreator.okbutton(_("ok"), self.onOkButton)
         self.okBtn.SetDefault()
-        self.esc = self.announcementCreator.cancelbutton(_("キャンセル"), None)
+        self.esc = footerCreator.cancelbutton(_("キャンセル"), None)
 
     def GetData(self):
         return self.info.GetValue()

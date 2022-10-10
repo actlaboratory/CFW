@@ -74,8 +74,8 @@ class MainView(BaseView):
 	def showCourses(self):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
-		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"))
-		self.lst.AppendColumn(_("クラス名"))
+		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
+		self.lst.AppendColumn(_("クラス名"), width=600)
 		for i in self.courses:
 			self.lst.append((i["name"], ))
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
@@ -90,9 +90,13 @@ class MainView(BaseView):
 		print(self.topics)
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
+<<<<<<< HEAD
 		self.Clear()
 		self.tree, label = self.creator.treeCtrl("課題と資料")
 		root = self.tree.AddRoot(_("授業"))
+		self.Clear(20)
+		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
+		root = self.tree.AddRoot(_("課題"))
 		for topic in self.topics:
 			node = self.tree.AppendItem(root, topic["name"], )
 		for work in self.workList:
@@ -127,6 +131,11 @@ class MainView(BaseView):
 		self.announcements = announcements
 		if not announcements:
 			return
+
+		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"), proportion=1, sizerFlag=wx.EXPAND)
+		self.announcementList.AppendColumn(_("お知らせ"), width=500)
+		self.announcementList.AppendColumn(_("作成日時"), width=300)
+		self.announcementList.AppendColumn(_("更新者"), width=200)
 		self.announcementData = []
 		for announcement in self.announcements:
 			self.text = announcement["text"]
@@ -151,6 +160,7 @@ class MainView(BaseView):
 						materials.append(videos)
 						#辞書が入ったリストを格納するためのリストを作る
 			self.announcementData.append(materials)
+		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog, sizerFlag=wx.ALIGN_RIGHT)
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
 
 	def announcementCreateButton(self):
@@ -373,6 +383,8 @@ class Events(BaseEvents):
 		self.parent.announcementCreateButton()
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
+		self.parent.creator.GetPanel().Layout()
+
 
 	def alternate(self, event):
 		link = self.parent.tree.GetItemData(event.GetItem())
