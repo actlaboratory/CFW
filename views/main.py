@@ -275,7 +275,7 @@ class Events(BaseEvents):
 				dialog(_("不明なエラーが発生しました。"),_("エラー"))
 			return
 		if selected == menuItemsStore.getRef("file_update"):
-			self.parent.announcementList.Destroy()
+			self.parent.announcementList.clear()
 			self.parent.showannouncements(self.courseId)
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
