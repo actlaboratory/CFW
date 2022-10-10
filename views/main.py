@@ -313,7 +313,9 @@ class Events(BaseEvents):
 			r = d.Show()
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
+			#定めた定数から-してクリックされたメニューの項目の位置を取得
 			index = (selected - 12000)
+			#取得されたインデックス番号に対応するurlを開く
 			webbrowser.open(self.parent.announcementData[self.focus][index]["alternate"])
 			return
 		if selected >= constants.MENU_URL_COPY:
