@@ -87,7 +87,6 @@ class MainView(BaseView):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), True)
 		response = self.getService().courses().topics().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.topics = response.get("topic", [])
-		print(self.topics)
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.Clear(20)
@@ -113,6 +112,9 @@ class MainView(BaseView):
 				if "link" in i:
 					urls = {"url":i["link"]["url"]}
 					self.tree.AppendItem(node, i["link"]["title"], data=urls)
+		self.tree.SetFocus()
+		self.tree.Expand(root)
+		self.tree.SelectItem(root, select=True)
 
 	def announcementListCtrl(self):
 		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"), proportion=1, sizerFlag=wx.EXPAND)
@@ -180,8 +182,6 @@ class MainView(BaseView):
 					videos = {"youtube":i["youtubeVideo"]["alternateLink"]}
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=videos)
 
-		info = self.tree.GetRootItem()
-		self.tree.SetFocus()
 		self.tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.events.alternate)
 		self.DSC, label = self.creator.inputbox(_("説明"), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_PROCESS_ENTER)
 		self.tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.events.onWorkSelected)
@@ -408,8 +408,7 @@ class Events(BaseEvents):
 
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
-		if description == None:
-			self.parent.DSC.Clear()
+		if not description:
 			self.parent.DSC.Disable()
 			return
 		if "description" in description:
