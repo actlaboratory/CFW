@@ -9,6 +9,7 @@ defaultKeymap["mainView"]={
 	"file_update":"ctrl+r/f5",
 	"file_back":"Back",
 	"file_exit":"ctrl+X",
+	"file_class_update":"ctrl+shift+f5",
 	"OPTION_OPTION":"",
 	"OPTION_KEY_CONFIG":"",
 
