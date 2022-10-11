@@ -99,6 +99,8 @@ class MainView(BaseView):
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
 			node = self.tree.AppendItem(root, work["title"], data=self.dsc)
+			if "materials" not in work:
+				return
 			for i in work["materials"]:
 				if "form" in i:
 					formInfo = {"formItem":i["form"]["formUrl"]}
@@ -127,6 +129,7 @@ class MainView(BaseView):
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
 		self.announcements = announcements
+		print(announcements)
 		if not announcements:
 			return
 
@@ -166,8 +169,11 @@ class MainView(BaseView):
 	def workMaterials(self, materials):
 		root = self.tree.GetRootItem()
 		root = self.tree.AppendItem(root, ("資料"))
+		self.dsc = {}
 		for material in materials:
 			node = self.tree.AppendItem(root, material["title"], data=self.dsc)
+			if "materials" not in material:
+				return
 			for i in material["materials"]:
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
@@ -366,6 +372,7 @@ class Events(BaseEvents):
 				newMap[identifier.upper()][menuData[name]]=""
 		newMap.write()
 		return True
+
 	def on_class_CLICK(self, event):
 		if event.GetIndex() == -1:
 			return
@@ -377,7 +384,6 @@ class Events(BaseEvents):
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 		self.parent.creator.GetPanel().Layout()
-
 
 	def alternate(self, event):
 		link = self.parent.tree.GetItemData(event.GetItem())
@@ -409,6 +415,7 @@ class Events(BaseEvents):
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
 		if not description:
+			self.parent.DSC.Clear()
 			self.parent.DSC.Disable()
 			return
 		if "description" in description:
