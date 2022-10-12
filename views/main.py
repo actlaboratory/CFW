@@ -78,7 +78,7 @@ class MainView(BaseView):
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
 		self.lst.AppendColumn(_("クラス名"), width=600)
 		for i in self.courses:
-			self.lst.append((i["name"]), )
+			self.lst.append((i["name"], ))
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
 		self.lst.Focus(0)
 		self.lst.Select(0)
