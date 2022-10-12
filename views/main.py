@@ -320,11 +320,12 @@ class Events(BaseEvents):
 
 		if selected == menuItemsStore.getRef("HELP_UPDATE"):
 			update.checkUpdate()
-
+			return
 		if selected==menuItemsStore.getRef("HELP_VERSIONINFO"):
 			d = versionDialog.dialog()
 			d.Initialize()
 			r = d.Show()
+			return
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
 			#定めた定数から-してクリックされたメニューの項目の位置を取得
