@@ -67,6 +67,7 @@ class MainView(BaseView):
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
 			if response["courses"]:
 				self.courses = response.get("courses", [])
+
 		except HttpError as error:
 			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
 			return
@@ -77,7 +78,7 @@ class MainView(BaseView):
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
 		self.lst.AppendColumn(_("クラス名"), width=600)
 		for i in self.courses:
-			self.lst.append((i["name"], ))
+			self.lst.append((i["name"]), )
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
 		self.lst.Focus(0)
 		self.lst.Select(0)
@@ -87,6 +88,7 @@ class MainView(BaseView):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), True)
 		response = self.getService().courses().topics().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.topics = response.get("topic", [])
+		print(self.topics)
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.Clear(20)
@@ -103,8 +105,11 @@ class MainView(BaseView):
 				return
 			for i in work["materials"]:
 				if "form" in i:
-					formInfo = {"formItem":i["form"]["formUrl"]}
-					self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
+					if "title" in i["form"]:
+						formInfo = {"formItem":i["form"]["formUrl"]}
+						self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
+					else:
+						self.tree.AppendItem(node,("無題"))
 				if "driveFile" in i:
 					drive = {"driveItems":i["driveFile"]["driveFile"]["alternateLink"]}
 					self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
@@ -129,7 +134,6 @@ class MainView(BaseView):
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
 		self.announcements = announcements
-		print(announcements)
 		if not announcements:
 			return
 
