@@ -79,7 +79,10 @@ class MainView(BaseView):
 		self.lst.AppendColumn(_("クラス名"), width=600)
 		self.lst.AppendColumn(_("セクション"))
 		for i in self.courses:
-			self.lst.append((i["name"], "セクション", i["section"], ))
+			if "section" in i:
+				self.lst.append((i["name"], "セクション", i["section"], ))
+			else:
+				self.lst.Append((i["name"], ))
 			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
 		self.lst.Focus(0)
 		self.lst.Select(0)
