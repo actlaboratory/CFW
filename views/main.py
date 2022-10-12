@@ -3,16 +3,9 @@
 #Copyright (C) 2019 Yukio Nozawa <personal@nyanchangames.com>
 #Copyright (C) 2019-2021 yamahubuki <itiro.ishino@gmail.com>
 
-from asyncio import events, selector_events
-from email.quoprimime import body_check
-from unittest import result
 import winsound
 import faulthandler
 import pyperclip
-from msilib.schema import File
-from multiprocessing import context
-from nturl2path import url2pathname
-#from typing_extensions import Self
 from api.classroom_users import UserCache
 from views import authorizing
 import wx
