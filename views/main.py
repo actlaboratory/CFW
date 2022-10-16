@@ -85,14 +85,13 @@ class MainView(BaseView):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), True)
 		response = self.getService().courses().topics().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.topics = response.get("topic", [])
-		print(self.topics)
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(_("授業"))
 		for topic in self.topics:
-			node = self.tree.AppendItem(root, topic["name"], )
+			node = self.tree.AppendItem(root, topic["name"])
 		for work in self.workList:
 			self.dsc = {}
 			if "description" in work:
@@ -313,11 +312,12 @@ class Events(BaseEvents):
 
 		if selected == menuItemsStore.getRef("HELP_UPDATE"):
 			update.checkUpdate()
-
+			return
 		if selected==menuItemsStore.getRef("HELP_VERSIONINFO"):
 			d = versionDialog.dialog()
 			d.Initialize()
 			r = d.Show()
+			return
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
 			#定めた定数から-してクリックされたメニューの項目の位置を取得
