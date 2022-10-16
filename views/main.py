@@ -100,10 +100,9 @@ class MainView(BaseView):
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
-						formInfo = {"formItem":i["form"]["formUrl"]}
-						self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
-					else:
-						self.tree.AppendItem(node,("無題"))
+						if "title" in i["form"]:
+							formInfo = {"formItem":i["form"]["formUrl"]}
+							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
 					drive = {"driveItems":i["driveFile"]["driveFile"]["alternateLink"]}
 					self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
