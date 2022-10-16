@@ -97,11 +97,9 @@ class MainView(BaseView):
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
 			node = self.tree.AppendItem(root, work["title"], data=self.dsc)
-			if "materials" not in work:
-				return
-			for i in work["materials"]:
-				if "form" in i:
-					if "title" in i["form"]:
+			if "materials" in work:
+				for i in work["materials"]:
+					if "form" in i:
 						formInfo = {"formItem":i["form"]["formUrl"]}
 						self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 					else:
