@@ -93,6 +93,7 @@ class MainView(BaseView):
 		for topic in self.topics:
 			node = self.tree.AppendItem(root, topic["name"])
 		for work in self.workList:
+			print(work)
 			self.dsc = {}
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
@@ -210,8 +211,6 @@ class Menu(BaseMenu):
 		self.hFileMenu=wx.Menu()
 		self.hOptionMenu=wx.Menu()
 		self.hHelpMenu=wx.Menu()
-		self.hAnnouncementListMenu=wx.Menu()
-
 
 		#ファイルメニュー
 		self.RegisterMenuCommand(self.hFileMenu,[
