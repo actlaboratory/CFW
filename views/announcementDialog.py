@@ -31,7 +31,7 @@ class dialog(baseDialog.BaseDialog):
 
         # フッター
         footerCreator = ViewCreator.ViewCreator(self.viewMode, self.panel, self.sizer, style=wx.ALIGN_RIGHT | wx.ALL, margin=20)
-        self.okBtn = footerCreator.okbutton(_("ok"), self.onOkButton)
+        self.okBtn = footerCreator.okbutton(_("投稿"), self.onOkButton)
         self.okBtn.SetDefault()
         self.esc = footerCreator.cancelbutton(_("キャンセル"), None)
 
@@ -39,6 +39,7 @@ class dialog(baseDialog.BaseDialog):
         return self.info.GetValue()
 
     def onOkButton(self, event):
+        #お知らせが未入力だったときの処理
         if len(self.info.GetValue().strip()) == 0:
             errorDialog(_("本文未入力で続行することはできません。"))
             return
