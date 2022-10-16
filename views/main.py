@@ -408,6 +408,7 @@ class Events(BaseEvents):
 		d.Initialize()
 		create = d.Show()
 		if create == wx.ID_CANCEL: return
+		#お知らせ作成ダイアログで入力された情報をもとにお知らせを作成
 		response = self.parent.getService().courses().announcements().create(courseId = self.courseId, body = {"text":d.GetValue(),"state":"PUBLISHED"}).execute()
 
 	def onWorkSelected(self, event):
