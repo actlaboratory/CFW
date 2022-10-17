@@ -92,7 +92,10 @@ class MainView(BaseView):
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
 		for topic in self.topics:
+					#トピックの名前をノードに指定
 			node = self.tree.AppendItem(root, topic["name"])
+			#トピックなしをノードに追加
+			node = self.tree.AppendItem(root,("トピックなし"))
 		for work in self.workList:
 			self.dsc = {}
 			if "description" in work:
