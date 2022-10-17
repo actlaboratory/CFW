@@ -72,6 +72,7 @@ class MainView(BaseView):
 		self.lst.AppendColumn(_("クラス名"), width=600)
 		self.lst.AppendColumn(_("セクション"))
 		for i in self.courses:
+			self.courseName = i["name"]
 			if "section" in i:
 				self.lst.append((i["name"], "セクション", i["section"], ))
 			else:
@@ -89,11 +90,10 @@ class MainView(BaseView):
 		self.workList = response.get("courseWork", [])
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
-		root = self.tree.AddRoot(_("授業"))
+		root = self.tree.AddRoot(self.courseName)
 		for topic in self.topics:
 			node = self.tree.AppendItem(root, topic["name"])
 		for work in self.workList:
-			print(work)
 			self.dsc = {}
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
