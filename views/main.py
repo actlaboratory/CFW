@@ -90,9 +90,13 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.courseName)
 		for topic in self.topics:
 			#トピックの名前をノードに指定
-			node = self.tree.AppendItem(root, topic["name"])
+			topicNodes = self.tree.AppendItem(root, topic["name"])
 			#トピックなしをノードに追加
-			node = self.tree.AppendItem(root,("トピックなし"))
+			noTopic = self.tree.AppendItem(root,("トピックなし"))
+			workNodes = self.tree.AppendItem(topicNodes,("課題"))
+			materialNodes = self.tree.AppendItem(topicNodes,("資料"))
+			noWork = self.tree.AppendItem(noTopic,("課題"))
+			noMaterialNodes = self.tree.AppendItem(noTopic,("資料"))
 		for work in self.workList:
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
