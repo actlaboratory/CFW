@@ -85,6 +85,7 @@ class MainView(BaseView):
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
+		topicId = {}
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
@@ -94,13 +95,31 @@ class MainView(BaseView):
 			#トピックなしをノードに追加
 			noTopic = self.tree.AppendItem(root,("トピックなし"))
 			workNodes = self.tree.AppendItem(topicNodes,("課題"))
-			materialNodes = self.tree.AppendItem(topicNodes,("資料"))
 			noWork = self.tree.AppendItem(noTopic,("課題"))
-			noMaterialNodes = self.tree.AppendItem(noTopic,("資料"))
 		for work in self.workList:
+			if "topicId" in work:
+				if "description" in work:
+					self.dsc = {"description":work["description"]}
+				node = self.tree.AppendItem(workNodes, work["title"], data=self.dsc)
+				if "materials" in work:
+					for i in work["materials"]:
+						if "form" in i:
+							if "title" in i["form"]:
+								formInfo = {"formItem":i["form"]["formUrl"]}
+								self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
+					if "driveFile" in i:
+						drive = {"driveItems":i["driveFile"]["driveFile"]["alternateLink"]}
+						self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
+					if "youtubeVideo" in i:
+						video = {"youtube":i["youtubeVideo"]["alternateLink"]}
+						self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=video)
+					if "link" in i:
+						urls = {"url":i["link"]["url"]}
+						self.tree.AppendItem(node, i["link"]["title"], data=urls)
+
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
-			node = self.tree.AppendItem(root, work["title"], data=self.dsc)
+			node = self.tree.AppendItem(noWork, work["title"], data=self.dsc)
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
