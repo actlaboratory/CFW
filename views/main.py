@@ -70,14 +70,10 @@ class MainView(BaseView):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
 		self.lst.AppendColumn(_("クラス名"), width=600)
-		self.lst.AppendColumn(_("セクション"))
 		for i in self.courses:
 			self.courseName = i["name"]
-			if "section" in i:
-				self.lst.append((i["name"], "セクション", i["section"], ))
-			else:
-				self.lst.Append((i["name"], ))
-			self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
+			self.lst.Append((i["name"], ))
+		self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
 		self.lst.Focus(0)
 		self.lst.Select(0)
 
@@ -88,16 +84,16 @@ class MainView(BaseView):
 		self.topics = response.get("topic", [])
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
+		self.dsc = {}
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
 		for topic in self.topics:
-					#トピックの名前をノードに指定
+			#トピックの名前をノードに指定
 			node = self.tree.AppendItem(root, topic["name"])
 			#トピックなしをノードに追加
 			node = self.tree.AppendItem(root,("トピックなし"))
 		for work in self.workList:
-			self.dsc = {}
 			if "description" in work:
 				self.dsc = {"description":work["description"]}
 			node = self.tree.AppendItem(root, work["title"], data=self.dsc)
