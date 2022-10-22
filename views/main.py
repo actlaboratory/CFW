@@ -97,14 +97,16 @@ class MainView(BaseView):
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
 		workNodes = {}
+		if "topicId" in workNodes:
+			workNode = workNodes[topicId]
+			print(workNode)
+			self.workNode = workNode
 		for work in self.workList:
 			if "topicId" in work:
 				topicId = work["topicId"]
 			else:
 				#topicIdがなかった場合
 				topicId = 0
-		if "topicId" in workNodes:
-			workNode = workNodes[topicId]
 		if "description" in work:
 			self.dsc = {"description":work["description"]}
 			node = self.tree.AppendItem(workNode, work["title"], data=self.dsc)
