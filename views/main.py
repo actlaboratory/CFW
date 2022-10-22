@@ -85,11 +85,9 @@ class MainView(BaseView):
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
-		topicId = {}
-		if "topicId" in self.topics:
-			topicId = {self.topics["topicId"]:self.topicNode}
 		for topic in self.topics:
 			topicNode = self.tree.AppendItem(root, topic["name"])
+			topicId = {topic["topicId"]:topicNode}
 			self.topicNode = topicNode
 
 	def works(self,courseId):
