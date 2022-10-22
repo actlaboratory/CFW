@@ -87,7 +87,7 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.courseName)
 		self.topicId = {}
 		if "topicId" in self.topics:
-			topicId = {self.topics["topicId"]:node}
+			self.topicId = {self.topics["topicId"]:self.topicNode}
 		for topic in self.topics:
 			topicNode = self.tree.AppendItem(root, topic["name"])
 			self.topicNode = topicNode
