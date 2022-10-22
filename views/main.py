@@ -87,6 +87,7 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.courseName)
 		for topic in self.topics:
 			topicNode = self.tree.AppendItem(root, topic["name"])
+			#topicIdとnodeのもドリチを辞書に格納
 			topicId = {topic["topicId"]:topicNode}
 			self.topicNode = topicNode
 
