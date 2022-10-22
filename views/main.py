@@ -82,25 +82,27 @@ class MainView(BaseView):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), True)
 		response = self.getService().courses().topics().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.topics = response.get("topic", [])
-		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
-		self.workList = response.get("courseWork", [])
-		self.dsc = {}
-		topicId = {}
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
+		self.topicId = {}
+		if "topicId" in self.topics:
+			topicId = {self.topics["topicId"]:node}
 		for topic in self.topics:
-			#トピックの名前をノードに指定
-			topicNodes = self.tree.AppendItem(root, topic["name"])
-			#トピックなしをノードに追加
-			noTopic = self.tree.AppendItem(root,("トピックなし"))
-			workNodes = self.tree.AppendItem(topicNodes,("課題"))
-			noWork = self.tree.AppendItem(noTopic,("課題"))
+			topicNode = self.tree.AppendItem(root, topic["name"])
+			self.topicNode = topicNode
+
+	def works(self,courseId):
+		root = self.tree.GetRootItem()
+		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
+		self.workList = response.get("courseWork", [])
+		self.dsc = {}
+		noWork = self.tree.AppendItem(root, ("トピックなし"))
 		for work in self.workList:
 			if "topicId" in work:
 				if "description" in work:
 					self.dsc = {"description":work["description"]}
-				node = self.tree.AppendItem(workNodes, work["title"], data=self.dsc)
+				node = self.tree.AppendItem(self.topicNode, work["title"], data=self.dsc)
 				if "materials" in work:
 					for i in work["materials"]:
 						if "form" in i:
@@ -397,6 +399,7 @@ class Events(BaseEvents):
 			return
 		self.courseId = self.parent.courses[event.GetIndex()]["id"]
 		self.parent.showTopics(self.courseId)
+		self.parent.works(self.courseId)
 		self.parent.announcementListCtrl()
 		self.parent.showannouncements(self.courseId)
 		self.parent.announcementCreateButton()
