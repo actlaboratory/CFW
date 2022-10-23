@@ -89,15 +89,15 @@ class MainView(BaseView):
 		for topic in self.topics:
 			topicNode = self.tree.AppendItem(root, topic["name"])
 			#topicIdとnodeのもドリチを辞書に格納
-			self.topicNodes[topic["topicId"]] = topicNode
-			print(self.topicNodes)
+			topicId = topic["topicId"]
+			self.topicNodes[topicId]= topicNode
 
 	def works(self,courseId):
 		root = self.tree.GetRootItem()
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
-		self.workNodes = {}
+		workNodes = {}
 		for work in self.workList:
 			if "topicId" in work:
 				topicId = work["topicId"]
@@ -105,7 +105,7 @@ class MainView(BaseView):
 				#topicIdがなかった場合
 				topicId = 0
 			if topicId in workNodes:
-				self.workNodes[topicId] = node
+				topicNode = topicNodes[topicId]
 			else:
 				self.tree.AppendItem(self.topicNodes,("課題"))
 		if "description" in work:
