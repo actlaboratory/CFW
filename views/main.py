@@ -100,7 +100,6 @@ class MainView(BaseView):
 		if "topicId" in workNodes:
 			workNode = workNodes[topicId]
 			print(workNode)
-			self.workNode = workNode
 		for work in self.workList:
 			if "topicId" in work:
 				topicId = work["topicId"]
