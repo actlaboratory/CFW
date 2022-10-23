@@ -97,15 +97,17 @@ class MainView(BaseView):
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
-		workNodes = {}
-		if "topicId" in workNodes:
-			self.workNode = workNodes[topicId] = node
+		self.workNodes = {}
 		for work in self.workList:
 			if "topicId" in work:
 				topicId = work["topicId"]
 			else:
 				#topicIdがなかった場合
 				topicId = 0
+			if topicId in workNodes:
+				self.workNodes[topicId] = node
+			else:
+				self.tree.AppendItem(self.topicNodes,("課題"))
 		if "description" in work:
 			self.dsc["description"] = work["description"]
 			node = self.tree.AppendItem(self.workNode, work["title"], data=self.dsc)
