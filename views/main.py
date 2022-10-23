@@ -87,10 +87,10 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.courseName)
 		self.topicNodes = {}
 		for topic in self.topics:
-			topicNode = self.tree.AppendItem(root, topic["name"])
+			self.topicNode = self.tree.AppendItem(root, topic["name"])
 			#topicIdとnodeのもドリチを辞書に格納
 			topicId = topic["topicId"]
-			self.topicNodes[topicId]= topicNode
+			self.topicNodes[topicId]= self.topicNode
 
 	def works(self,courseId):
 		root = self.tree.GetRootItem()
@@ -105,11 +105,11 @@ class MainView(BaseView):
 				#topicIdがなかった場合
 				topicId = 0
 			if topicId not in workNodes:
-				workNodes[topicId] = self.topicNodes
-				node = self.tree.AppendItem(self.topicNodes[topicId],("課題"))
-		if "description" in work:
-			self.dsc["description"] = work["description"]
-			node = self.tree.AppendItem(workNode, work["title"], data=self.dsc)
+				workNodes[topicId] = self.topicNode
+				node = self.tree.AppendItem(workNodes[topicId],("課題"))
+			if "description" in work:
+				self.dsc["description"] = work["description"]
+				self.tree.AppendItem(node, work["title"], data=self.dsc)
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
