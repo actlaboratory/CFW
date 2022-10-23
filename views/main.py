@@ -85,11 +85,12 @@ class MainView(BaseView):
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
+		self.topicNodes = {}
 		for topic in self.topics:
 			topicNode = self.tree.AppendItem(root, topic["name"])
 			#topicIdとnodeのもドリチを辞書に格納
-			topicNodes = {topic["topicId"]:topicNode}
-			self.topicNode = topicNode
+			self.topicNodes[topic["topicId"]] = topicNode
+			print(self.topicNodes)
 
 	def works(self,courseId):
 		root = self.tree.GetRootItem()
@@ -98,8 +99,7 @@ class MainView(BaseView):
 		self.dsc = {}
 		workNodes = {}
 		if "topicId" in workNodes:
-			workNode = workNodes[topicId]
-			print(workNode)
+			self.workNode = workNodes[topicId] = node
 		for work in self.workList:
 			if "topicId" in work:
 				topicId = work["topicId"]
@@ -107,8 +107,8 @@ class MainView(BaseView):
 				#topicIdがなかった場合
 				topicId = 0
 		if "description" in work:
-			self.dsc = {"description":work["description"]}
-			node = self.tree.AppendItem(workNode, work["title"], data=self.dsc)
+			self.dsc["description"] = work["description"]
+			node = self.tree.AppendItem(self.workNode, work["title"], data=self.dsc)
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
