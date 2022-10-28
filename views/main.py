@@ -114,13 +114,13 @@ class MainView(BaseView):
 				for i in work["materials"]:
 					if "form" in i:
 						if "title" in i["form"]:
-							formInfo = {"formItem":i["form"]["formUrl"]}
+							formInfo = {"url":i["form"]["formUrl"]}
 							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
-					drive = {"driveItems":i["driveFile"]["driveFile"]["alternateLink"]}
+					drive = {"url":i["driveFile"]["driveFile"]["alternateLink"]}
 					self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
 				if "youtubeVideo" in i:
-					video = {"youtube":i["youtubeVideo"]["alternateLink"]}
+					video = {"url":i["youtubeVideo"]["alternateLink"]}
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=video)
 				if "link" in i:
 					urls = {"url":i["link"]["url"]}
@@ -187,7 +187,7 @@ class MainView(BaseView):
 			for i in material["materials"]:
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
-						materialInfo = {"materials":i["driveFile"]["driveFile"]["alternateLink"]}
+						materialInfo = {"url":i["driveFile"]["driveFile"]["alternateLink"]}
 						self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data = materialInfo)
 					else:
 						self.tree.AppendItem(node, (_("不明なファイル")))
@@ -195,7 +195,7 @@ class MainView(BaseView):
 					info = {"url":i["link"]["url"]}
 					self.tree.AppendItem(node, i["link"]["title"], data=info)
 				elif "youtubeVideo" in i:
-					videos = {"youtube":i["youtubeVideo"]["alternateLink"]}
+					videos = {"url":i["youtubeVideo"]["alternateLink"]}
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=videos)
 
 		self.tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.events.alternate)
@@ -402,18 +402,6 @@ class Events(BaseEvents):
 		if "url" in link:
 			url = link["url"]
 			webbrowser.open(url)
-		elif "formItem" in link:
-			form = link["formItem"]
-			webbrowser.open(form)
-		elif "driveItems" in link:
-			items = link["driveItems"]
-			webbrowser.open(items)
-		elif "youtube" in link:
-			stream = link["youtube"]
-			webbrowser.open(stream)
-		elif "materials" in link:
-			files = link["materials"]
-			webbrowser.open(files)
 
 	def announcementCreateDialog(self, event):
 		d = announcementDialog.dialog()
