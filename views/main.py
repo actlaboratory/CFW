@@ -98,6 +98,10 @@ class MainView(BaseView):
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
 		workNodes = {}
+		drive = {}
+		video = {}
+		urls = {}
+		formInfo = {}
 		for work in self.workList:
 			if "topicId" in work:
 				topicId = work["topicId"]
@@ -114,16 +118,16 @@ class MainView(BaseView):
 				for i in work["materials"]:
 					if "form" in i:
 						if "title" in i["form"]:
-							formInfo = {"url":i["form"]["formUrl"]}
+							formInfo["url"] = i["form"]["formUrl"]
 							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
-					drive = {"url":i["driveFile"]["driveFile"]["alternateLink"]}
+					drive["url"] = i["driveFile"]["driveFile"]["alternateLink"]
 					self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
 				if "youtubeVideo" in i:
-					video = {"url":i["youtubeVideo"]["alternateLink"]}
+					video["url"] = i["youtubeVideo"]["alternateLink"]
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=video)
 				if "link" in i:
-					urls = {"url":i["link"]["url"]}
+					urls["url"] = i["link"]["url"]
 					self.tree.AppendItem(node, i["link"]["title"], data=urls)
 		self.tree.SetFocus()
 		self.tree.Expand(root)
