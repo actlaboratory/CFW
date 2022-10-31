@@ -181,10 +181,15 @@ class MainView(BaseView):
 		response = self.getService().courses().courseWorkMaterials().list(courseId=courseId).execute()
 		files = response.get("courseWorkMaterial", [])
 		return files
+
 	def workMaterials(self, materials):
 		root = self.tree.GetRootItem()
-		root = self.tree.AppendItem(root, ("資料"))
+		root = self.tree.AppendItem(self.topicNode, ("資料"))
 		self.dsc = {}
+		materialInfo = {}
+		info = {}
+		videos = {}
+
 		for material in materials:
 			node = self.tree.AppendItem(root, material["title"], data=self.dsc)
 			if "materials" not in material:
@@ -192,15 +197,15 @@ class MainView(BaseView):
 			for i in material["materials"]:
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
-						materialInfo = {"url":i["driveFile"]["driveFile"]["alternateLink"]}
+						materialInfo["url"] = i["driveFile"]["driveFile"]["alternateLink"]
 						self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data = materialInfo)
 					else:
 						self.tree.AppendItem(node, (_("不明なファイル")))
 				elif "link" in i:
-					info = {"url":i["link"]["url"]}
+					info["url"] = i["link"]["url"]
 					self.tree.AppendItem(node, i["link"]["title"], data=info)
 				elif "youtubeVideo" in i:
-					videos = {"url":i["youtubeVideo"]["alternateLink"]}
+					videos["url"] = i["youtubeVideo"]["alternateLink"]
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=videos)
 
 		self.tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.events.alternate)
