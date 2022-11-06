@@ -423,13 +423,18 @@ class Events(BaseEvents):
 		response = self.parent.getService().courses().announcements().create(courseId = self.courseId, body = {"text":d.GetValue(),"state":"PUBLISHED"}).execute()
 
 	def onWorkSelected(self, event):
+		self.parent.description_data()
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
 		if not description:
+			self.parent.DSCBOX.Clear()
+			self.parent.DSCBOX.Disable()
+			return
+		if "description" not in description:
+			self.parent.DSCBOX.Clear()
+			self.parent.DSCBOX.Disable()
 			return
 		if "description" in description:
-			self.parent.description_data()
 			self.parent.DSCBOX.Enable()
-			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.SetValue(description["description"])
 
 	def announcementContext(self, event):
