@@ -87,10 +87,15 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.courseName)
 		self.topicNodes = {}
 		for topic in self.topics:
-			self.topicNode = self.tree.AppendItem(root, topic["name"])
-			#topicIdとnodeのもドリチを辞書に格納
-			topicId = topic["topicId"]
-			self.topicNodes[topicId]= self.topicNode
+			if "topicId" in topic:
+				self.topicNode = self.tree.AppendItem(root, topic["name"])
+				#topicIdとnodeのもドリチを辞書に格納
+				topicId = topic["topicId"]
+				self.topicNodes[topicId]= self.topicNode
+			if "topicId" not in topic:
+				self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
+				topicId = 0
+				self.topicNodes[topicId] = self.topicNode
 
 	def works(self,courseId):
 		root = self.tree.GetRootItem()
@@ -433,7 +438,6 @@ class Events(BaseEvents):
 		if "description" in description:
 			self.parent.DSCBOX.Enable()
 			self.parent.DSCBOX.SetValue(description["description"])
-
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
