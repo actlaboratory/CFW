@@ -425,19 +425,15 @@ class Events(BaseEvents):
 	def onWorkSelected(self, event):
 		self.parent.description_data()
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
-		if not description:
+		if description is None:
+			description = ""
 			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.Disable()
-			print("inputbox is Disabled")
-			return
-		if "description" not in description:
-			self.parent.DSCBOX.Clear()
-			self.parent.DSCBOX.Disable()
-			print("description is not Found")
 			return
 		if "description" in description:
 			self.parent.DSCBOX.Enable()
 			self.parent.DSCBOX.SetValue(description["description"])
+
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
