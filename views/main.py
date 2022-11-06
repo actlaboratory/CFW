@@ -428,10 +428,12 @@ class Events(BaseEvents):
 		if not description:
 			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.Disable()
+			print("inputbox is Disabled")
 			return
 		if "description" not in description:
 			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.Disable()
+			print("description is not Found")
 			return
 		if "description" in description:
 			self.parent.DSCBOX.Enable()
