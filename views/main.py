@@ -207,10 +207,11 @@ class MainView(BaseView):
 				elif "youtubeVideo" in i:
 					videos["url"] = i["youtubeVideo"]["alternateLink"]
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=videos)
-
 		self.tree.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.events.alternate)
-		self.DSC, label = self.creator.inputbox(_("説明"), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_PROCESS_ENTER)
 		self.tree.Bind(wx.EVT_TREE_SEL_CHANGED, self.events.onWorkSelected)
+
+	def description_data(self):
+		self.DSCBOX, label = self.creator.inputbox(_("説明"), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_PROCESS_ENTER)
 
 	def getService(self):
 		if not self.app.credentialManager.isOK():
@@ -424,13 +425,12 @@ class Events(BaseEvents):
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
 		if not description:
-			self.parent.DSC.Clear()
-			self.parent.DSC.Disable()
 			return
 		if "description" in description:
-			save = description["description"]
-			self.parent.DSC.Enable()
-			self.parent.DSC.SetValue(save)
+			self.parent.description_data()
+			self.parent.DSCBOX.Enable()
+			self.parent.DSCBOX.Clear()
+			self.parent.DSCBOX.SetValue(description["description"])
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
