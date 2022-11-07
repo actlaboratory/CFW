@@ -86,16 +86,13 @@ class MainView(BaseView):
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
 		root = self.tree.AddRoot(self.courseName)
 		self.topicNodes = {}
+		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
 		for topic in self.topics:
 			if "topicId" in topic:
 				self.topicNode = self.tree.AppendItem(root, topic["name"])
 				#topicIdとnodeのもドリチを辞書に格納
 				topicId = topic["topicId"]
 				self.topicNodes[topicId]= self.topicNode
-			if "topicId" not in topic:
-				self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
-				topicId = 0
-				self.topicNodes[topicId] = self.topicNode
 
 	def works(self,courseId):
 		root = self.tree.GetRootItem()
