@@ -71,7 +71,6 @@ class MainView(BaseView):
 		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
 		self.lst.AppendColumn(_("クラス名"), width=600)
 		for i in self.courses:
-			self.courseName = i["name"]
 			self.lst.Append((i["name"], ))
 		self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
 		self.lst.Focus(0)
@@ -84,7 +83,7 @@ class MainView(BaseView):
 		self.topics = response.get("topic", [])
 		self.Clear(20)
 		self.tree, label = self.creator.treeCtrl("課題と資料", proportion=1,sizerFlag=wx.EXPAND)
-		root = self.tree.AddRoot(self.courseName)
+		root = self.tree.AddRoot(self.events.data)
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
 		for topic in self.topics:
@@ -399,6 +398,9 @@ class Events(BaseEvents):
 		if event.GetIndex() == -1:
 			return
 		self.courseId = self.parent.courses[event.GetIndex()]["id"]
+		focus = self.parent.lst.GetFocusedItem()
+		self.data = self.parent.lst.GetItemText(focus, col=0)
+		print(self.data)
 		self.parent.showTopics(self.courseId)
 		self.parent.works(self.courseId)
 		self.parent.announcementListCtrl()
