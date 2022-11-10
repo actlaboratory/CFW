@@ -92,6 +92,8 @@ class MainView(BaseView):
 				#topicIdとnodeのもドリチを辞書に格納
 				topicId = topic["topicId"]
 				self.topicNodes[topicId]= self.topicNode
+			if topicId not in self.topicNodes:
+				self.topicNodes[0] = self.topicNode
 
 	def works(self,courseId):
 		root = self.tree.GetRootItem()
