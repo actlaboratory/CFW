@@ -179,6 +179,7 @@ class MainView(BaseView):
 		self.announcementList.Bind(wx.EVT_CONTEXT_MENU, self.events.announcementContext)
 
 	def announcementCreateButton(self):
+		#お知らせ投稿ボタンの作成
 		self.createButton = self.creator.button(_("クラスへの連絡事項を入力") + ("..."), self.events.announcementCreateDialog)
 
 	def tempFiles(self, courseId):
