@@ -115,25 +115,24 @@ class MainView(BaseView):
 			if topicId not in workNodes:
 				workNodes[topicId] = self.topicNode
 				node = self.tree.AppendItem(workNodes[topicId],("課題"))
-				nodes = self.tree.AppendItem(node, work["title"])
 			if "description" in work:
 				self.dsc["description"] = work["description"]
-				self.tree.AppendItem(nodes, work["title"], data=self.dsc)
+				self.tree.AppendItem(node, work["title"], data=self.dsc)
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
 						if "title" in i["form"]:
 							formInfo["url"] = i["form"]["formUrl"]
-							self.tree.AppendItem(nodes, i["form"]["title"], data=formInfo)
+							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
 					drive["url"] = i["driveFile"]["driveFile"]["alternateLink"]
-					self.tree.AppendItem(nodes, i["driveFile"]["driveFile"]["title"], data=drive)
+					self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
 				if "youtubeVideo" in i:
 					video["url"] = i["youtubeVideo"]["alternateLink"]
-					self.tree.AppendItem(nodes, i["youtubeVideo"]["title"], data=video)
+					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=video)
 				if "link" in i:
 					urls["url"] = i["link"]["url"]
-					self.tree.AppendItem(nodes, i["link"]["title"], data=urls)
+					self.tree.AppendItem(node, i["link"]["title"], data=urls)
 		self.tree.SetFocus()
 		self.tree.Expand(root)
 		self.tree.SelectItem(root, select=True)
