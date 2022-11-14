@@ -419,6 +419,7 @@ class Events(BaseEvents):
 			return
 		if "url" in link:
 			url = link["url"]
+			print(url)
 			webbrowser.open(url)
 
 	def announcementCreateDialog(self, event):
