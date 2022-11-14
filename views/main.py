@@ -100,7 +100,6 @@ class MainView(BaseView):
 		root = self.tree.GetRootItem()
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
-		print(self.workList)
 		self.dsc = {}
 		workNodes = {}
 		drive = {}
