@@ -87,8 +87,6 @@ class MainView(BaseView):
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
 		topicId = 0
-		if topicId not in self.topicNodes:
-			self.topicNodes[0] = self.topicNode
 		for topic in self.topics:
 			if "topicId" in topic:
 				self.topicNode = self.tree.AppendItem(root, topic["name"])
@@ -125,8 +123,9 @@ class MainView(BaseView):
 							formInfo["url"] = i["form"]["formUrl"]
 							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
-					drive["url"] = i["driveFile"]["driveFile"]["alternateLink"]
-					self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
+					if "title" in i["driveFile"]["driveFile"]:
+						drive["url"] = i["driveFile"]["driveFile"]["alternateLink"]
+						self.tree.AppendItem(node, i["driveFile"]["driveFile"]["title"], data=drive)
 				if "youtubeVideo" in i:
 					video["url"] = i["youtubeVideo"]["alternateLink"]
 					self.tree.AppendItem(node, i["youtubeVideo"]["title"], data=video)
