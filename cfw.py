@@ -18,7 +18,7 @@ else: os.chdir(os.path.abspath(os.path.dirname(__file__)))
 def exchandler(type, exc, tb):
 	msg=traceback.format_exception(type, exc, tb)
 	print("".join(msg))
-	winsound.PlaySound("beep.wav", winsound.SND_FILENAME)
+	winsound.Beep(850, 1200)
 	try:
 		f=open("errorLog.txt", "a")
 		f.writelines(msg)
