@@ -110,9 +110,9 @@ class MainView(BaseView):
 			else:
 				#topicIdがなかった場合
 				topicId = 0
-			if topicId not in workNodes:
-				workNodes[topicId] = self.topicNode
-				node = self.tree.AppendItem(workNodes[topicId],("課題"))
+			if topicId not in self.workNodes:
+				self.workNodes[topicId] = self.topicNode
+				node = self.tree.AppendItem(self.topicNodes[topicId],("課題"))
 			if "description" in work:
 				self.dsc["description"] = work["description"]
 				self.tree.AppendItem(node, work["title"], data=self.dsc)
