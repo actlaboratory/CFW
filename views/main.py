@@ -86,12 +86,12 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.events.data)
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
-		topicId = 0
+		topicId = self.topics["topicId"]
 		for topic in self.topics:
+
 			if "topicId" in topic:
 				self.topicNode = self.tree.AppendItem(root, topic["name"])
 				#topicIdとnodeのもドリチを辞書に格納
-				topicId = topic["topicId"]
 				self.topicNodes[topicId]= self.topicNode
 
 	def works(self,courseId):
