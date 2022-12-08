@@ -87,8 +87,8 @@ class MainView(BaseView):
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
 		topicId = self.topics["topicId"]
+		self.topicNodes[topicId]= self.topicNode
 		for topic in self.topics:
-
 			if "topicId" in topic:
 				self.topicNode = self.tree.AppendItem(root, topic["name"])
 				#topicIdとnodeのもドリチを辞書に格納
