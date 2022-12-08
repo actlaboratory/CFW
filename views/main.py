@@ -87,11 +87,12 @@ class MainView(BaseView):
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
 		topicId = 0
+		self.topicNodes[topicId]= self.topicNode
 		for topic in self.topics:
 			if "topicId" in topic:
+				topicId = topic["topicId"]
 				self.topicNode = self.tree.AppendItem(root, topic["name"])
 				#topicIdとnodeのもドリチを辞書に格納
-				topicId = topic["topicId"]
 				self.topicNodes[topicId]= self.topicNode
 
 	def works(self,courseId):
@@ -99,7 +100,7 @@ class MainView(BaseView):
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
-		workNodes = {}
+		self.workNodes = {}
 		drive = {}
 		video = {}
 		urls = {}
@@ -110,9 +111,9 @@ class MainView(BaseView):
 			else:
 				#topicIdがなかった場合
 				topicId = 0
-			if topicId not in workNodes:
-				workNodes[topicId] = self.topicNode
-				node = self.tree.AppendItem(workNodes[topicId],("課題"))
+			if topicId not in self.workNodes:
+				self.workNodes[topicId] = self.topicNode
+				node = self.tree.AppendItem(self.topicNodes[topicId],("課題"))
 			if "description" in work:
 				self.dsc["description"] = work["description"]
 				self.tree.AppendItem(node, work["title"], data=self.dsc)
