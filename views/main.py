@@ -403,7 +403,6 @@ class Events(BaseEvents):
 		self.courseId = self.parent.courses[event.GetIndex()]["id"]
 		focus = self.parent.lst.GetFocusedItem()
 		self.data = self.parent.lst.GetItemText(focus, col=0)
-		print(self.data)
 		self.parent.showTopics(self.courseId)
 		self.parent.works(self.courseId)
 		self.parent.announcementListCtrl()
