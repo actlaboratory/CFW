@@ -86,10 +86,11 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.events.data)
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
-		topicId = self.topics["topicId"]
+		topicId = 0
 		self.topicNodes[topicId]= self.topicNode
 		for topic in self.topics:
 			if "topicId" in topic:
+				topicId = topic["topicId"]
 				self.topicNode = self.tree.AppendItem(root, topic["name"])
 				#topicIdとnodeのもドリチを辞書に格納
 				self.topicNodes[topicId]= self.topicNode
@@ -99,7 +100,7 @@ class MainView(BaseView):
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.dsc = {}
-		workNodes = {}
+		self.workNodes = {}
 		drive = {}
 		video = {}
 		urls = {}
