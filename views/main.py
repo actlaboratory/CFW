@@ -407,7 +407,6 @@ class Events(BaseEvents):
 		self.parent.showTopics(self.courseId)
 		self.parent.works(self.courseId)
 		self.parent.announcementListCtrl()
-
 		self.parent.showannouncements(self.courseId)
 		self.parent.announcementCreateButton()
 		self.parent.description_data()
@@ -434,7 +433,7 @@ class Events(BaseEvents):
 
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
-		if description == None:
+		if not description:
 			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.Disable()
 			return
