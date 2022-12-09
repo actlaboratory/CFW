@@ -216,6 +216,7 @@ class MainView(BaseView):
 
 	def description_data(self):
 		self.DSCBOX, label = self.creator.inputbox(_("説明"), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_PROCESS_ENTER)
+		return
 
 	def getService(self):
 		if not self.app.credentialManager.isOK():
@@ -354,7 +355,7 @@ class Events(BaseEvents):
 			dialog(_("url"),_("リンク先のコピーが完了しました。"))
 			return
 		if selected <= constants.MENU_URL_COPY:
-			winsound.Beep(550, 750)
+			print("urlを開いています...")
 			obj = event.GetEventObject()
 			webbrowser.open(obj.GetLabel(selected))
 			return
@@ -406,8 +407,10 @@ class Events(BaseEvents):
 		self.parent.showTopics(self.courseId)
 		self.parent.works(self.courseId)
 		self.parent.announcementListCtrl()
+
 		self.parent.showannouncements(self.courseId)
 		self.parent.announcementCreateButton()
+		self.parent.description_data()
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 		self.parent.creator.GetPanel().Layout()
@@ -430,10 +433,8 @@ class Events(BaseEvents):
 		response = self.parent.getService().courses().announcements().create(courseId = self.courseId, body = {"text":d.GetValue(),"state":"PUBLISHED"}).execute()
 
 	def onWorkSelected(self, event):
-		self.parent.description_data()
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
-		if description is None:
-			description = ""
+		if description == None:
 			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.Disable()
 			return
