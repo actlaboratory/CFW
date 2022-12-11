@@ -86,6 +86,7 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.events.data)
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
+		#ここにも固定値を入れておく
 		topicId = 0
 		self.topicNodes[topicId]= self.topicNode
 		for topic in self.topics:
