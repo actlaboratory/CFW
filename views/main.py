@@ -86,6 +86,7 @@ class MainView(BaseView):
 		root = self.tree.AddRoot(self.events.data)
 		self.topicNodes = {}
 		self.topicNode = self.tree.AppendItem(root, ("トピックなし"))
+		#ここにも固定値を入れておく
 		topicId = 0
 		self.topicNodes[topicId]= self.topicNode
 		for topic in self.topics:
@@ -122,6 +123,7 @@ class MainView(BaseView):
 					if "form" in i:
 						if "title" in i["form"]:
 							formInfo["url"] = i["form"]["formUrl"]
+							self.log.info(formInfo)
 							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
@@ -193,7 +195,6 @@ class MainView(BaseView):
 		materialInfo = {}
 		info = {}
 		videos = {}
-
 		for material in materials:
 			node = self.tree.AppendItem(root, material["title"], data=self.dsc)
 			if "materials" not in material:
