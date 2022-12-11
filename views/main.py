@@ -122,6 +122,7 @@ class MainView(BaseView):
 					if "form" in i:
 						if "title" in i["form"]:
 							formInfo["url"] = i["form"]["formUrl"]
+							self.log.info(formInfo)
 							self.tree.AppendItem(node, i["form"]["title"], data=formInfo)
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
@@ -193,7 +194,6 @@ class MainView(BaseView):
 		materialInfo = {}
 		info = {}
 		videos = {}
-
 		for material in materials:
 			node = self.tree.AppendItem(root, material["title"], data=self.dsc)
 			if "materials" not in material:
