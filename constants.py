@@ -21,7 +21,7 @@ SUPPORTING_LANGUAGE={"ja-JP": "日本語","en-US": "English"}
 
 #各種ファイル名
 LOG_PREFIX="CFW"
-LOG_FILE_NAME="application.log"
+LOG_FILE_NAME="cfw.log"
 SETTING_FILE_NAME="settings.ini"
 CACHE_FILE_NAME = "cache.ini"
 KEYMAP_FILE_NAME="keymap.ini"
