@@ -47,9 +47,11 @@ class MainView(BaseView):
 		self.courses = []
 		self.service = self.getService()
 		if not self.service:
+			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 			return
 
 		self.getCourses()
+		self.class_listctrl()
 		self.showCourses()
 
 	def getCourses(self):
@@ -65,11 +67,13 @@ class MainView(BaseView):
 			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
 			return
 
+	def class_listctrl(self):
+		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
+		self.lst.AppendColumn(_("クラス名"), width=600)
+
 	def showCourses(self):
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
-		self.lst, label = self.creator.virtualListCtrl(_("クラス一覧"), proportion=1, sizerFlag=wx.EXPAND)
-		self.lst.AppendColumn(_("クラス名"), width=600)
 		for i in self.courses:
 			self.lst.Append((i["name"], ))
 		self.lst.Bind(wx.EVT_LIST_ITEM_ACTIVATED, self.events.on_class_CLICK)
@@ -222,7 +226,7 @@ class MainView(BaseView):
 	def getService(self):
 		if not self.app.credentialManager.isOK():
 			errorDialog(_("利用可能なアカウントが見つかりませんでした。ファイルメニューから認証を実行してください。"), self.hFrame)
-			self.showCourses()
+			self.class_listctrl()
 			return
 
 		self.app.credentialManager.refresh()
@@ -293,6 +297,7 @@ class Events(BaseEvents):
 
 			if status==errorCodes.OK:
 				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_ACCOUNT"), False)
+				self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), True)
 				return
 
 			elif status == errorCodes.CANCELED_BY_USER:
@@ -311,8 +316,8 @@ class Events(BaseEvents):
 			self.parent.showannouncements(self.courseId)
 			return
 		if selected == menuItemsStore.getRef("file_class_update"):
-			self.parent.lst.Destroy()
 			self.parent.getCourses()
+			self.parent.lst.clear()
 			self.parent.showCourses()
 			return
 		if selected == menuItemsStore.getRef("file_back"):
