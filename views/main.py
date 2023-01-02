@@ -107,11 +107,11 @@ class MainView(BaseView):
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
 		self.workNodes = {}
-		drive = {}
-		video = {}
-		urls = {}
 		for work in self.workList:
 			formInfo = {}
+			drive = {}
+			video = {}
+			urls = {}
 			self.dsc = {}
 			if "topicId" in work:
 				topicId = work["topicId"]
@@ -120,7 +120,7 @@ class MainView(BaseView):
 				topicId = 0
 			if topicId not in self.workNodes:
 				node = self.tree.AppendItem(self.topicNodes[topicId],("課題"))
-				self.workNodes[topicId] =node
+				self.workNodes[topicId] = self.topicNode,node
 			if "description" in work:
 				self.dsc["description"] = work["description"]
 				self.tree.AppendItem(node, work["title"], data=self.dsc)
@@ -429,7 +429,6 @@ class Events(BaseEvents):
 			return
 		if "url" in link:
 			url = link["url"]
-			print(url)
 			webbrowser.open(url)
 
 	def announcementCreateDialog(self, event):
