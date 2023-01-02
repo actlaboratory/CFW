@@ -109,8 +109,8 @@ class MainView(BaseView):
 		drive = {}
 		video = {}
 		urls = {}
-		formInfo = {}
 		for work in self.workList:
+			formInfo = {}
 			if "topicId" in work:
 				topicId = work["topicId"]
 			else:
