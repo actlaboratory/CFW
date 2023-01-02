@@ -120,7 +120,7 @@ class MainView(BaseView):
 				topicId = 0
 			if topicId not in self.workNodes:
 				node = self.tree.AppendItem(self.topicNodes[topicId],("課題"))
-				self.workNodes[topicId] = self.topicNode,node
+				self.workNodes[topicId] = node
 			if "description" in work:
 				self.dsc["description"] = work["description"]
 				self.tree.AppendItem(node, work["title"], data=self.dsc)
@@ -196,15 +196,18 @@ class MainView(BaseView):
 
 	def workMaterials(self, materials):
 		root = self.tree.GetRootItem()
-		root = self.tree.AppendItem(self.topicNode, ("資料"))
-		self.dsc = {}
-		materialInfo = {}
-		info = {}
-		videos = {}
+		self.materialNodes = {}
 		for material in materials:
-			node = self.tree.AppendItem(root, material["title"], data=self.dsc)
-			if "materials" not in material:
-				return
+			if "topicId" in material:
+				topicId = material["topicId"]
+			else:
+				topicId = 0
+			materialInfo = {}
+			info = {}
+			videos = {}
+			if topicId not in self.materialNodes:
+				node = self.tree.AppendItem(self.topicNodes[topicId], ("資料"))
+				self.materialNodes[topicId] = node
 			for i in material["materials"]:
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
@@ -419,6 +422,8 @@ class Events(BaseEvents):
 		self.parent.showannouncements(self.courseId)
 		self.parent.announcementCreateButton()
 		self.parent.description_data()
+		self.parent.DSCBOX.Clear()
+		self.parent.DSCBOX.Disable()
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 		self.parent.creator.GetPanel().Layout()
@@ -442,8 +447,6 @@ class Events(BaseEvents):
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
 		if description == None:
-			self.parent.DSCBOX.Clear()
-			self.parent.DSCBOX.Disable()
 			return
 		if "description" in description:
 			self.parent.DSCBOX.Enable()
