@@ -106,13 +106,13 @@ class MainView(BaseView):
 		root = self.tree.GetRootItem()
 		response = self.getService().courses().courseWork().list(pageToken=None, pageSize=30, courseId=courseId).execute()
 		self.workList = response.get("courseWork", [])
-		self.dsc = {}
 		self.workNodes = {}
 		drive = {}
 		video = {}
 		urls = {}
 		for work in self.workList:
 			formInfo = {}
+			self.dsc = {}
 			if "topicId" in work:
 				topicId = work["topicId"]
 			else:
@@ -442,13 +442,16 @@ class Events(BaseEvents):
 
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
-		if not description:
+		if description == None:
 			self.parent.DSCBOX.Clear()
 			self.parent.DSCBOX.Disable()
 			return
 		if "description" in description:
 			self.parent.DSCBOX.Enable()
 			self.parent.DSCBOX.SetValue(description["description"])
+		if "description" not in description:
+			self.parent.DSCBOX.Clear()
+			self.parent.DSCBOX.Disable()
 
 	def announcementContext(self, event):
 		focus = self.parent.announcementList.GetFocusedItem()
