@@ -322,6 +322,7 @@ class Events(BaseEvents):
 			return
 		if selected == menuItemsStore.getRef("file_back"):
 			self.parent.Clear()
+			self.parent.class_listctrl()
 			self.parent.showCourses()
 			self.parent.lst.Focus(0)
 			self.parent.lst.Select(0)
