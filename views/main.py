@@ -422,6 +422,8 @@ class Events(BaseEvents):
 		self.parent.showannouncements(self.courseId)
 		self.parent.announcementCreateButton()
 		self.parent.description_data()
+		self.parent.DSCBOX.Clear()
+		self.parent.DSCBOX.Disable()
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 		self.parent.creator.GetPanel().Layout()
@@ -445,8 +447,6 @@ class Events(BaseEvents):
 	def onWorkSelected(self, event):
 		description = self.parent.tree.GetItemData(self.parent.tree.GetFocusedItem())
 		if description == None:
-			self.parent.DSCBOX.Clear()
-			self.parent.DSCBOX.Disable()
 			return
 		if "description" in description:
 			self.parent.DSCBOX.Enable()
