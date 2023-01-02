@@ -48,6 +48,8 @@ class MainView(BaseView):
 		self.service = self.getService()
 		if not self.service:
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
+			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
+			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
 			return
 
 		self.getCourses()
