@@ -196,6 +196,7 @@ class MainView(BaseView):
 
 	def workMaterials(self, materials):
 		root = self.tree.GetRootItem()
+		self.materialNodes = {}
 		for material in materials:
 			if "topicId" in material:
 				topicId = material["topicId"]
@@ -205,11 +206,8 @@ class MainView(BaseView):
 			materialInfo = {}
 			info = {}
 			videos = {}
-			if topicId not in self.workNodes:
-				node = self.tree.AppendItem(self.topicNodes[topicId], ("資料"))
-				self.tree.AppendItem(node, material["title"], data=self.dsc)
-			if "materials" not in material:
-				return
+			node = self.tree.AppendItem(self.topicNodes[topicId], ("資料"))
+			self.materialNodes[topicId] = node
 			for i in material["materials"]:
 				if "driveFile" in i:
 					if "title" in i["driveFile"]["driveFile"]:
