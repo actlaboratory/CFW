@@ -273,7 +273,7 @@ class Menu(BaseMenu):
 		])
 
 		#メニューバーの生成
-		self.hMenuBar.Append(self.hFileMenu,_("ファイル(&F))"))
+		self.hMenuBar.Append(self.hFileMenu,_("ファイル(&F)"))
 		self.hMenuBar.Append(self.hOptionMenu,_("オプション(&O)"))
 		self.hMenuBar.Append(self.hHelpMenu,_("ヘルプ(&H)"))
 		target.SetMenuBar(self.hMenuBar)
