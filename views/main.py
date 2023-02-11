@@ -333,7 +333,7 @@ class Events(BaseEvents):
 			self.parent.lst.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_exit"):
-			self.parent.hFrame.Close()
+			self.hide()
 			return
 		if selected == menuItemsStore.getRef("OPTION_OPTION"):
 			d = settingsDialog.Dialog()
@@ -373,6 +373,12 @@ class Events(BaseEvents):
 			obj = event.GetEventObject()
 			webbrowser.open(obj.GetLabel(selected))
 			return
+		if selected==menuItemsStore.getRef("SHOW"):
+			self.show()
+			return
+		if selected==menuItemsStore.getRef("exit"):
+			self.exitWithConfirmation()
+			return
 
 	def setKeymap(self, identifier,ttl, keymap=None,filter=None):
 		if keymap:
@@ -398,6 +404,28 @@ class Events(BaseEvents):
 		d=globalKeyConfig.Dialog(keyData,menuData,[],filter)
 		d.Initialize(ttl)
 		if d.Show()==wx.ID_CANCEL: return False
+
+	def OnExit(self, event):
+		if event.CanVeto():
+			# Alt+F4が押された
+			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
+				self.hide()
+			else:
+				super().OnExit(event)
+				globalVars.app.tb.Destroy()
+		else:
+			super().OnExit(event)
+			globalVars.app.tb.Destroy()
+
+	def hide(self):
+		self.parent.hFrame.Hide()
+
+	def show(self):
+		self.parent.hFrame.Show()
+		self.parent.hPanel.SetFocus()
+
+	def exitWithConfirmation(self):
+		self.parent.hFrame.Close(True)
 
 		keyData,menuData=d.GetValue()
 
