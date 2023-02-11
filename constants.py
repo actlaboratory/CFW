@@ -7,7 +7,7 @@ import wx
 #アプリケーション基本情報
 APP_FULL_NAME = "Classroom for Windows"#アプリケーションの完全な名前
 APP_NAME="CFW"#アプリケーションの名前
-APP_ICON = None
+APP_ICON = "cfw.ico"
 APP_VERSION="0.0.1"
 APP_LAST_RELEASE_DATE="20xx-xx-xx"
 APP_COPYRIGHT_YEAR="2021"
