@@ -16,6 +16,9 @@ class Main(AppBase.MainBase):
 		# プロキシの設定を適用
 		self.proxyEnviron = proxyUtil.virtualProxyEnviron()
 		self.setProxyEnviron()
+		# タスクバーアイコンの準備
+		import views.taskbar
+		self.tb = views.taskbar.TaskbarIcon()
 		# アップデートを実行
 		if self.config.getboolean("general", "update"):
 			globalVars.update.update(True)

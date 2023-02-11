@@ -333,7 +333,7 @@ class Events(BaseEvents):
 			self.parent.lst.Select(0)
 			return
 		if selected == menuItemsStore.getRef("file_exit"):
-			self.parent.hFrame.Close()
+			self.hide()
 			return
 		if selected == menuItemsStore.getRef("OPTION_OPTION"):
 			d = settingsDialog.Dialog()
@@ -356,6 +356,14 @@ class Events(BaseEvents):
 			d.Initialize()
 			r = d.Show()
 			return
+		if selected==menuItemsStore.getRef("SHOW"):
+			self.show()
+			return
+
+		if selected==menuItemsStore.getRef("EXIT"):
+			self.exitWithConfirmation()
+			return
+
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
 			#定めた定数から-してクリックされたメニューの項目の位置を取得
@@ -369,10 +377,10 @@ class Events(BaseEvents):
 			dialog(_("url"),_("リンク先のコピーが完了しました。"))
 			return
 		if selected <= constants.MENU_URL_COPY:
-			print("urlを開いています...")
 			obj = event.GetEventObject()
 			webbrowser.open(obj.GetLabel(selected))
 			return
+
 
 	def setKeymap(self, identifier,ttl, keymap=None,filter=None):
 		if keymap:
@@ -398,6 +406,33 @@ class Events(BaseEvents):
 		d=globalKeyConfig.Dialog(keyData,menuData,[],filter)
 		d.Initialize(ttl)
 		if d.Show()==wx.ID_CANCEL: return False
+
+	def OnExit(self, event):
+		if event.CanVeto():
+			# Alt+F4が押された
+			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
+				self.hide()
+			else:
+				super().OnExit(event)
+				globalVars.app.tb.Destroy()
+		else:
+			super().OnExit(event)
+			globalVars.app.tb.Destroy()
+			return
+
+	def hide(self):
+		self.parent.hFrame.Hide()
+		return
+
+	def show(self):
+		self.parent.hFrame.Show()
+		self.parent.hPanel.SetFocus()
+		return
+
+	def exitWithConfirmation(self):
+		self.parent.hFrame.Close(True)
+		globalVars.app.tb.Destroy()
+		return
 
 		keyData,menuData=d.GetValue()
 
