@@ -356,6 +356,14 @@ class Events(BaseEvents):
 			d.Initialize()
 			r = d.Show()
 			return
+		if selected==menuItemsStore.getRef("SHOW"):
+			self.show()
+			return
+
+		if selected==menuItemsStore.getRef("EXIT"):
+			self.exitWithConfirmation()
+			return
+
 		if selected >= constants.MENU_MATERIAL_OPEN:
 			obj = event.GetEventObject()
 			#定めた定数から-してクリックされたメニューの項目の位置を取得
@@ -369,16 +377,10 @@ class Events(BaseEvents):
 			dialog(_("url"),_("リンク先のコピーが完了しました。"))
 			return
 		if selected <= constants.MENU_URL_COPY:
-			print("urlを開いています...")
 			obj = event.GetEventObject()
 			webbrowser.open(obj.GetLabel(selected))
 			return
-		if selected==menuItemsStore.getRef("SHOW"):
-			self.show()
-			return
-		if selected==menuItemsStore.getRef("exit"):
-			self.exitWithConfirmation()
-			return
+
 
 	def setKeymap(self, identifier,ttl, keymap=None,filter=None):
 		if keymap:
@@ -416,16 +418,21 @@ class Events(BaseEvents):
 		else:
 			super().OnExit(event)
 			globalVars.app.tb.Destroy()
+			return
 
 	def hide(self):
 		self.parent.hFrame.Hide()
+		return
 
 	def show(self):
 		self.parent.hFrame.Show()
 		self.parent.hPanel.SetFocus()
+		return
 
 	def exitWithConfirmation(self):
 		self.parent.hFrame.Close(True)
+		globalVars.app.tb.Destroy()
+		return
 
 		keyData,menuData=d.GetValue()
 
