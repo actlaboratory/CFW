@@ -14,7 +14,7 @@ dic={
 	"FILE_ACCOUNT":_("アカウントと連携する") + "...",
 	"FILE_EXAMPLE":_("テストダイアログを閲覧")+"...",
 	"file_back":_("クラス選択画面へ戻る"),
-	"file_exit":_("終了"),
+	"file_hide":_("ウィンドウを隠す"),
 
 	"OPTION_OPTION":_("オプション(&O)")+"...",
 	"OPTION_KEY_CONFIG":_("ショートカットキーの設定(&K)")+"...",
