@@ -10,6 +10,7 @@ from api.classroom_users import UserCache
 from views import authorizing
 import wx
 import CredentialManager
+import views.viewannouncements
 
 import constants
 import globalVars
@@ -335,6 +336,14 @@ class Events(BaseEvents):
 		if selected == menuItemsStore.getRef("file_exit"):
 			self.hide()
 			return
+
+		if selected == menuItemsStore.getRef("view_announcements"):
+			index = self.parent.announcementList.GetFocusedItem()
+			data = self.parent.announcementList.GetItemText(index, col=0)
+			detail = views.viewannouncements.Dialog(data)
+			detail.Initialize()
+			detail.Show()
+			return
 		if selected == menuItemsStore.getRef("OPTION_OPTION"):
 			d = settingsDialog.Dialog()
 			d.Initialize()
@@ -507,6 +516,7 @@ class Events(BaseEvents):
 		self.parent.menu.RegisterMenuCommand(context,"url_data", subMenu=openSubMenu)
 		self.parent.menu.RegisterMenuCommand(context, "url_copy",subMenu=copySubMenu)
 		self.parent.menu.RegisterMenuCommand(context, "tempFile_open", subMenu=tmp)
+		self.parent.menu.RegisterMenuCommand(context, "view_announcements")
 		for i,j in zip(urlLists, range(len(urlLists))):
 			self.i = i
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)
@@ -516,3 +526,4 @@ class Events(BaseEvents):
 			#announcementDataの中の辞書が格納されたリストにアクセスできるのでmaterialsにアペンドされた辞書を取り出すことができる
 			tmp.Append(constants.MENU_MATERIAL_OPEN + l,k["name"])
 		self.parent.announcementList.PopupMenu(context, event)
+
