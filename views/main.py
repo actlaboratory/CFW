@@ -46,10 +46,12 @@ class MainView(BaseView):
 		)
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
 		self.courses = []
+		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_hide"), False)
 		self.service = self.getService()
 		if not self.service:
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
+
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
 			return
 
@@ -471,6 +473,7 @@ class Events(BaseEvents):
 		self.parent.description_data()
 		self.parent.DSCBOX.Clear()
 		self.parent.DSCBOX.Disable()
+		self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_hide"), True)
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 		self.parent.creator.GetPanel().Layout()
