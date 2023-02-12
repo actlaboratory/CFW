@@ -258,7 +258,8 @@ class Menu(BaseMenu):
 				"file_class_update",
 				"file_update",
 				"file_back",
-				"file_exit"
+				"file_hide",
+				"EXIT"
 		])
 
 		#オプションメニュー
@@ -333,7 +334,7 @@ class Events(BaseEvents):
 			self.parent.lst.Focus(0)
 			self.parent.lst.Select(0)
 			return
-		if selected == menuItemsStore.getRef("file_exit"):
+		if selected == menuItemsStore.getRef("file_hide"):
 			self.hide()
 			return
 
@@ -420,7 +421,7 @@ class Events(BaseEvents):
 		if event.CanVeto():
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
-				self.hide()
+				self.exitWithConfirmation()
 			else:
 				super().OnExit(event)
 				globalVars.app.tb.Destroy()
