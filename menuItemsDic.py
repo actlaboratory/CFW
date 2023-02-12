@@ -25,6 +25,7 @@ dic={
 	"url_data":_("リンクを開く") ,
 	"url_copy":_("リンクをコピー"),
 	"tempFile_open":_("添付ファイルを開く"),
+	"view_announcements":_("お知らせの詳細を表示"),
 
 	"SHOW":_("ウィンドウを表示(&s)"),
 	"EXIT":_("終了(&w)"),
