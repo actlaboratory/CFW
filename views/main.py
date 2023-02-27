@@ -423,12 +423,10 @@ class Events(BaseEvents):
 		if event.CanVeto():
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
-				self.exitWithConfirmation()
+				self.exit()
 			else:
 				super().OnExit(event)
 				globalVars.app.tb.Destroy()
-		else:
-			super().OnExit(event)
 			globalVars.app.tb.Destroy()
 			return
 
@@ -441,7 +439,7 @@ class Events(BaseEvents):
 		self.parent.hPanel.SetFocus()
 		return
 
-	def exitWithConfirmation(self):
+	def exit(self):
 		self.parent.hFrame.Close(True)
 		globalVars.app.tb.Destroy()
 		return
