@@ -8,7 +8,7 @@ from views.baseDialog import *
 class Dialog(BaseDialog):
     def __init__(self, announcement):
         self.announcement = announcement
-        super().__init__("お知らせ詳細ダイアログ")
+        super().__init__("announcementDetailsDialog")
 
     def Initialize(self):
         self.log.debug("created")
