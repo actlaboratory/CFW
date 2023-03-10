@@ -422,10 +422,10 @@ class Events(BaseEvents):
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
 				self.hide()
-			else:
-				super().OnExit(event)
-				globalVars.app.tb.Destroy()
-				return
+		else:
+			super().OnExit(event)
+			globalVars.app.tb.Destroy()
+			return
 
 	def hide(self):
 		self.parent.hFrame.Hide()
