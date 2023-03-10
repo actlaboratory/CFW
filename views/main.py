@@ -371,7 +371,7 @@ class Events(BaseEvents):
 			return
 
 		if selected==menuItemsStore.getRef("EXIT"):
-			self.exitWithConfirmation()
+			self.exit()
 			return
 
 		if selected >= constants.MENU_MATERIAL_OPEN:
