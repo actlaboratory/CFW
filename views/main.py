@@ -371,7 +371,7 @@ class Events(BaseEvents):
 			return
 
 		if selected==menuItemsStore.getRef("EXIT"):
-			self.exitWithConfirmation()
+			self.exit()
 			return
 
 		if selected >= constants.MENU_MATERIAL_OPEN:
@@ -422,10 +422,10 @@ class Events(BaseEvents):
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
 				self.hide()
-			else:
-				super().OnExit(event)
-				globalVars.app.tb.Destroy()
-				return
+		else:
+			super().OnExit(event)
+			globalVars.app.tb.Destroy()
+			return
 
 	def hide(self):
 		self.parent.hFrame.Hide()
