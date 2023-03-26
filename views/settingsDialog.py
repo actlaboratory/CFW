@@ -101,6 +101,7 @@ class Dialog(BaseDialog):
 		# view
 		self._setValue(self.autohide,"general","autohide",configType.BOOL,False)
 		self._setValue(self.minimizeonexit, "general", "minimizeOnExit", configType.BOOL, True)
+
 		self._setValue(self.language,"general","language",configType.DIC,self.languageSelection)
 		self._setValue(self.colormode,"view","colormode",configType.DIC,self.colorModeSelection)
 		self._setValue(self.textwrapping,"view","textwrapping",configType.DIC,self.textWrappingSelection)
