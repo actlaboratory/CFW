@@ -69,6 +69,8 @@ class Dialog(BaseDialog):
 
 		# general
 		creator=views.ViewCreator.ViewCreator(self.viewMode,self.tab,None,views.ViewCreator.GridBagSizer,label=_("一般"),style=wx.ALL|wx.EXPAND,proportion=1,margin=20)
+		self.autohide = creator.checkbox(_("起動時にウィンドウを隠す(&H)"))
+		self.minimizeonexit = creator.checkbox(_("終了時にタスクトレイに最小化(&M)"))
 		self.logLevel,dummy = creator.combobox(_("ログ記録レベル(&L)"),list(self.logLevelSelection.values()))
 		self.reader, static = creator.combobox(_("出力先(&O)"), list(self.readerSelection.values()))
 
@@ -95,8 +97,11 @@ class Dialog(BaseDialog):
 		# general
 		self._setValue(self.reader,"speech","reader",configType.DIC,self.readerSelection)
 		self._setValue(self.logLevel,"general","log_level",configType.DIC,self.logLevelSelection)
+		self._setValue(self.autohide,"general","autohide",configType.BOOL,False)
+		self._setValue(self.minimizeonexit, "general", "minimizeOnExit", configType.BOOL, True)
 
 		# view
+
 		self._setValue(self.language,"general","language",configType.DIC,self.languageSelection)
 		self._setValue(self.colormode,"view","colormode",configType.DIC,self.colorModeSelection)
 		self._setValue(self.textwrapping,"view","textwrapping",configType.DIC,self.textWrappingSelection)

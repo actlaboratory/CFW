@@ -16,7 +16,7 @@ dic={
 	"file_back":_("クラス選択画面へ戻る"),
 	"file_hide":_("ウィンドウを隠す(&h)"),
 
-	"OPTION_OPTION":_("オプション(&O)")+"...",
+	"OPTION_OPTION":_("設定(&S)")+"...",
 	"OPTION_KEY_CONFIG":_("ショートカットキーの設定(&K)")+"...",
 
 	"HELP_UPDATE":_("最新バージョンを確認(&U)")+"...",

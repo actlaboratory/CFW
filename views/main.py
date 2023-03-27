@@ -46,12 +46,10 @@ class MainView(BaseView):
 		)
 		self.InstallMenuEvent(Menu(self.identifier),self.events.OnMenuSelect)
 		self.courses = []
-		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_hide"), False)
 		self.service = self.getService()
 		if not self.service:
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_update"), False)
-
 			self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_back"), False)
 			return
 
@@ -373,7 +371,7 @@ class Events(BaseEvents):
 			return
 
 		if selected==menuItemsStore.getRef("EXIT"):
-			self.exitWithConfirmation()
+			self.exit()
 			return
 
 		if selected >= constants.MENU_MATERIAL_OPEN:
@@ -423,10 +421,7 @@ class Events(BaseEvents):
 		if event.CanVeto():
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
-				self.exitWithConfirmation()
-			else:
-				super().OnExit(event)
-				globalVars.app.tb.Destroy()
+				self.hide()
 		else:
 			super().OnExit(event)
 			globalVars.app.tb.Destroy()
@@ -441,7 +436,7 @@ class Events(BaseEvents):
 		self.parent.hPanel.SetFocus()
 		return
 
-	def exitWithConfirmation(self):
+	def exit(self):
 		self.parent.hFrame.Close(True)
 		globalVars.app.tb.Destroy()
 		return
@@ -473,7 +468,6 @@ class Events(BaseEvents):
 		self.parent.description_data()
 		self.parent.DSCBOX.Clear()
 		self.parent.DSCBOX.Disable()
-		self.parent.menu.hMenuBar.Enable(menuItemsStore.getRef("file_hide"), True)
 		materials = self.parent.tempFiles(self.courseId)
 		materials = self.parent.workMaterials(materials)
 		self.parent.creator.GetPanel().Layout()
