@@ -1,15 +1,29 @@
 ﻿# -*- coding: utf-8 -*-
 #Application Main
 
+import win32api
+import win32event
+import constants
+import winerror
 import AppBase
 import update
 import CredentialManager
 import globalVars
 import proxyUtil
+import win32event
+import win32api
+import winerror
 
 class Main(AppBase.MainBase):
 	def __init__(self):
 		super().__init__()
+	def OnInit(self):
+		#多重起動防止
+		globalVars.mutex = win32event.CreateMutex(None, 1, constants.APP_NAME)
+		if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
+			globalVars.mutex = None
+			return False
+		return True
 
 	def initialize(self):
 		self.setGlobalVars()
