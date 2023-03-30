@@ -149,7 +149,7 @@ class MainView(BaseView):
 	def announcementListCtrl(self):
 		self.announcementList, label = self.creator.virtualListCtrl(_("お知らせ一覧"), proportion=1, sizerFlag=wx.EXPAND)
 		self.announcementList.AppendColumn(_("お知らせ"), width=500)
-		self.announcementList.AppendColumn(_("作成日時"), width=300)
+		self.announcementList.AppendColumn(_("作成日"), width=300)
 		self.announcementList.AppendColumn(_("更新者"), width=200)
 
 	def showannouncements(self, courseId):
@@ -164,8 +164,9 @@ class MainView(BaseView):
 		for announcement in self.announcements:
 			self.text = announcement["text"]
 			updatetime = announcement["updateTime"]
-			#name = self.userCache.get(i["creatorUserId"], courseId)
-			self.announcementList.append((self.text, updatetime))
+			#お知らせ投稿者表示
+			name = announcement["creatorUserId"]
+			self.announcementList.append((self.text, updatetime, name))
 			#添付ファイルと一緒に投稿されたお知らせへの対応
 			materials = []
 			if "materials" in announcement:
