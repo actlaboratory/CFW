@@ -126,7 +126,7 @@ class MainView(BaseView):
 				self.dsc["description"] = work["description"]
 			else:
 				self.dsc["description"] = ""
-				self.tree.AppendItem(node, work["title"], data=self.dsc)
+			node = self.tree.AppendItem(node, work["title"], data=self.dsc)
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
