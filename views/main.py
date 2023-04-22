@@ -416,31 +416,7 @@ class Events(BaseEvents):
 		d.Initialize(ttl)
 		if d.Show()==wx.ID_CANCEL: return False
 
-	def OnExit(self, event):
-		if event.CanVeto():
-			# Alt+F4が押された
-			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
-				self.hide()
-		super().OnExit(event)
-		globalVars.app.tb.Destroy()
-		return
-
-	def hide(self):
-		self.parent.hFrame.Hide()
-		return
-
-	def show(self):
-		self.parent.hFrame.Show()
-		self.parent.hPanel.SetFocus()
-		return
-
-	def exit(self):
-		self.parent.hFrame.Close(True)
-		globalVars.app.tb.Destroy()
-		return
-
 		keyData,menuData=d.GetValue()
-
 		#キーマップの既存設定を置き換える
 		newMap=ConfigManager.ConfigManager()
 		newMap.read(constants.KEYMAP_FILE_NAME)
