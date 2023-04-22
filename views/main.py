@@ -124,7 +124,7 @@ class MainView(BaseView):
 				self.workNodes[topicId] = node
 			if "description" in work:
 				self.dsc["description"] = work["description"]
-				self.tree.AppendItem(node, work["title"], data=self.dsc)
+
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
@@ -142,6 +142,9 @@ class MainView(BaseView):
 				if "link" in i:
 					urls["url"] = i["link"]["url"]
 					self.tree.AppendItem(node, i["link"]["title"], data=urls)
+			else:
+				self.dsc["description"] = ""
+				self.tree.AppendItem(node, work["title"], data=self.dsc)
 		self.tree.SetFocus()
 		self.tree.Expand(root)
 		self.tree.SelectItem(root, select=True)
