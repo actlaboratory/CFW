@@ -9,12 +9,12 @@ APP_FULL_NAME = "Classroom for Windows"#アプリケーションの完全な名�
 APP_NAME="CFW"#アプリケーションの名前
 APP_ICON = "cfw.ico"
 APP_VERSION="0.0.1"
-APP_LAST_RELEASE_DATE="20xx-xx-xx"
-APP_COPYRIGHT_YEAR="2021"
+APP_LAST_RELEASE_DATE="2023-04-22"
+APP_COPYRIGHT_YEAR="2023"
 APP_LICENSE="Apache License 2.0"
-APP_DEVELOPERS="obaramayumi, ACT laboratory"
-APP_DEVELOPERS_URL="https://example.com/"
-APP_DETAILS_URL="https://example.com/template"
+APP_DEVELOPERS="mayumiPc, ACT laboratory"
+APP_DEVELOPERS_URL="https://actlab.org/"
+APP_DETAILS_URL="https://actlab.org/software/CFW"
 APP_COPYRIGHT_MESSAGE = "Copyright (c) %s %s All lights reserved." % (APP_COPYRIGHT_YEAR, APP_DEVELOPERS)
 
 SUPPORTING_LANGUAGE={"ja-JP": "日本語","en-US": "English"}
