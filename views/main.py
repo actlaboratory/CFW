@@ -294,7 +294,6 @@ class Events(BaseEvents):
 			return
 
 		selected=event.GetId()#メニュー識別しの数値が出る
-		r = d.Show()
 
 		if selected==menuItemsStore.getRef("FILE_ACCOUNT"):
 			authorizeDialog = authorizing.authorizeDialog()
