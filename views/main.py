@@ -452,6 +452,29 @@ class Events(BaseEvents):
 		newMap.write()
 		return True
 
+	def OnExit(self, event):
+		if event.CanVeto():
+			# Alt+F4が押された
+			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
+				self.hide()
+		super().OnExit(event)
+		globalVars.app.tb.Destroy()
+		return
+
+	def hide(self):
+		self.parent.hFrame.Hide()
+		return
+
+	def show(self):
+		self.parent.hFrame.Show()
+		self.parent.hPanel.SetFocus()
+		return
+
+	def exit(self):
+		self.parent.hFrame.Close(True)
+		globalVars.app.tb.Destroy()
+		return
+
 	def on_class_CLICK(self, event):
 		if event.GetIndex() == -1:
 			return
