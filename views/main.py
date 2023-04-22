@@ -356,6 +356,7 @@ class Events(BaseEvents):
 				self.parent.menu.ApplyShortcut(self.parent.hFrame)
 				self.parent.menu.Apply(self.parent.hFrame)
 				return
+
 		if selected == menuItemsStore.getRef("HELP_UPDATE"):
 			update.checkUpdate()
 			return
@@ -420,10 +421,9 @@ class Events(BaseEvents):
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
 				self.hide()
-		else:
-			super().OnExit(event)
-			globalVars.app.tb.Destroy()
-			return
+		super().OnExit(event)
+		globalVars.app.tb.Destroy()
+		return
 
 	def hide(self):
 		self.parent.hFrame.Hide()
