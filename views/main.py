@@ -124,7 +124,9 @@ class MainView(BaseView):
 				self.workNodes[topicId] = node
 			if "description" in work:
 				self.dsc["description"] = work["description"]
-				self.tree.AppendItem(node, work["title"], data=self.dsc)
+			else:
+				self.dsc["description"] = ""
+			node = self.tree.AppendItem(node, work["title"], data=self.dsc)
 			if "materials" in work:
 				for i in work["materials"]:
 					if "form" in i:
@@ -254,7 +256,6 @@ class Menu(BaseMenu):
 
 		#ファイルメニュー
 		self.RegisterMenuCommand(self.hFileMenu,[
-				"FILE_EXAMPLE",
 				"FILE_ACCOUNT",
 				"file_class_update",
 				"file_update",
@@ -293,11 +294,7 @@ class Events(BaseEvents):
 			return
 
 		selected=event.GetId()#メニュー識別しの数値が出る
-		if selected==menuItemsStore.getRef("FILE_EXAMPLE"):
-			d = sample.Dialog()
-			d.Initialize()
-			r = d.Show()
-			return
+
 		if selected==menuItemsStore.getRef("FILE_ACCOUNT"):
 			authorizeDialog = authorizing.authorizeDialog()
 			authorizeDialog.Initialize()
@@ -359,6 +356,7 @@ class Events(BaseEvents):
 				self.parent.menu.ApplyShortcut(self.parent.hFrame)
 				self.parent.menu.Apply(self.parent.hFrame)
 				return
+
 		if selected == menuItemsStore.getRef("HELP_UPDATE"):
 			update.checkUpdate()
 			return
@@ -418,15 +416,26 @@ class Events(BaseEvents):
 		d.Initialize(ttl)
 		if d.Show()==wx.ID_CANCEL: return False
 
+		keyData,menuData=d.GetValue()
+		#キーマップの既存設定を置き換える
+		newMap=ConfigManager.ConfigManager()
+		newMap.read(constants.KEYMAP_FILE_NAME)
+		for name,key in keyData.items():
+			if key!=_("なし"):
+				newMap[identifier.upper()][menuData[name]]=key
+			else:
+				newMap[identifier.upper()][menuData[name]]=""
+		newMap.write()
+		return True
+
 	def OnExit(self, event):
 		if event.CanVeto():
 			# Alt+F4が押された
 			if globalVars.app.config.getboolean("general", "minimizeOnExit", True):
 				self.hide()
-		else:
-			super().OnExit(event)
-			globalVars.app.tb.Destroy()
-			return
+		super().OnExit(event)
+		globalVars.app.tb.Destroy()
+		return
 
 	def hide(self):
 		self.parent.hFrame.Hide()
@@ -441,19 +450,6 @@ class Events(BaseEvents):
 		self.parent.hFrame.Close(True)
 		globalVars.app.tb.Destroy()
 		return
-
-		keyData,menuData=d.GetValue()
-
-		#キーマップの既存設定を置き換える
-		newMap=ConfigManager.ConfigManager()
-		newMap.read(constants.KEYMAP_FILE_NAME)
-		for name,key in keyData.items():
-			if key!=_("なし"):
-				newMap[identifier.upper()][menuData[name]]=key
-			else:
-				newMap[identifier.upper()][menuData[name]]=""
-		newMap.write()
-		return True
 
 	def on_class_CLICK(self, event):
 		if event.GetIndex() == -1:
