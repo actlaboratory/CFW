@@ -256,7 +256,6 @@ class Menu(BaseMenu):
 
 		#ファイルメニュー
 		self.RegisterMenuCommand(self.hFileMenu,[
-				"FILE_EXAMPLE",
 				"FILE_ACCOUNT",
 				"file_class_update",
 				"file_update",
@@ -295,11 +294,8 @@ class Events(BaseEvents):
 			return
 
 		selected=event.GetId()#メニュー識別しの数値が出る
-		if selected==menuItemsStore.getRef("FILE_EXAMPLE"):
-			d = sample.Dialog()
-			d.Initialize()
-			r = d.Show()
-			return
+		r = d.Show()
+
 		if selected==menuItemsStore.getRef("FILE_ACCOUNT"):
 			authorizeDialog = authorizing.authorizeDialog()
 			authorizeDialog.Initialize()
