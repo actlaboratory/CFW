@@ -42,7 +42,7 @@ class CredentialManager:
 			host='localhost',
 			port=8080, 
 			authorization_prompt_message='',			#標準出力への表示は不要
-			success_message=_("googleでの認証手続きが完了しました。このブラウザを閉じ、処理結果を確認してください。<script>window.close();</script>"),
+			success_message=_("Googleでの認証手続きが完了しました。このブラウザを閉じ、処理結果を確認してください。") + "<script>window.close();</script>",
 			open_browser=False
 		)
 		return url

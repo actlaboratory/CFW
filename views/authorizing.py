@@ -28,7 +28,7 @@ class authorizeDialog(BaseDialog):
 		"""いろんなwidgetを設置する。"""
 
 		self.creator=views.ViewCreator.ViewCreator(self.viewMode,self.panel,self.sizer,wx.VERTICAL, 20)
-		self.static = self.creator.staticText(_("ブラウザを開いて認証手続きを行います。\r\nよろしいですか？"),wx.ALIGN_LEFT | wx.ST_ELLIPSIZE_MIDDLE,-1,wx.ALIGN_LEFT)
+		self.static = self.creator.staticText(_("ブラウザを開いて認証手続きを行います。\nよろしいですか？"),wx.ALIGN_LEFT | wx.ST_ELLIPSIZE_MIDDLE,-1,wx.ALIGN_LEFT)
 		self.buttonCreator=views.ViewCreator.ViewCreator(self.viewMode,self.panel,self.sizer,wx.HORIZONTAL,20, style=wx.ALIGN_RIGHT)
 		self.bStart=self.buttonCreator.button(_("開始") + "(&S)", self.authorize)
 		self.bCancel=self.buttonCreator.button(_("キャンセル") + "(&C)", self.canceled)
