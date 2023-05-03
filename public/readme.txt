@@ -1,7 +1,7 @@
 		Classroom for Windows -CFW-
 
 	バージョン:  ver.1.0.0
-	リリース:  
+	リリース:  2023-05-04
 	開発・配布元:　ACT Laboratory　(https://actlab.org/)
 	主要開発者:  mayumi pc
 　　ソフト種別:　　オープンソースソフトウェア　(GitHubリポジトリ:https://github.com/mayumiPc/cfw/)
