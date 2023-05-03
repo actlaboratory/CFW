@@ -63,8 +63,7 @@ class MainView(BaseView):
 			return
 		try:
 			response = self.getService().courses().list(pageToken=None, pageSize=None).execute()
-			if response["courses"]:
-				self.courses = response.get("courses", [])
+			self.courses = response.get("courses", [])
 
 		except HttpError as error:
 			errorDialog(_("通信に失敗しました。インターネット接続を確認してください。"), self.hFrame)
