@@ -128,9 +128,16 @@ class update(threading.Thread):
 			self.log.info("updater not found")
 			os.remove(self._file_name)			
 			self.dialog.updater_notFound()
-		
 
 	def run(self):
+		try:
+			self._run()
+		except Exception as e:
+			self.log.error(traceback.format_exc())
+			simpleDialog.winDialog(_("アップデート"), _("アップデートのダウンロード中にエラーが発生しました。\nしばらくたってから再度お試しください。\nこの問題が繰り返し発生する場合は、開発者までご連絡ください。\n詳細：%s") % e)
+			wx.CallAfter(self.dialog.end)
+
+	def _run(self):
 		self.log.info("downloading update file...")
 		url = self.info["updater_url"]
 		self._file_name = "update_file.zip"
