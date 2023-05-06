@@ -72,7 +72,6 @@ def getCurrentVersion():
 		return "1.0.0"
 
 
-
 #step3: bumpup
 #build.pyからも呼び出しているので変更時は注意
 def bumpup(v, d):
@@ -83,9 +82,8 @@ def bumpup(v, d):
 	with open(VERSION_FILE_NAME, "w") as f:
 		json.dump(v,f)
 	print("Saved %s." % VERSION_FILE_NAME)
-	patch("readme.md",r'# 読ターFor NVDA Ver', r'\(更新:  ', v)
-	patch("public/readme.txt",r'読ターFor NVDA Ver', r'\(更新:  ', v)
-	patch("buildVars.py",r'ADDON_VERSION = "', r'ADDON_RELEASE_DATE = "', v)
+	patch("public/readme.txt",r'バージョン:　　ver\.', r'リリース:　　　', v)
+	patch("constants.py",r'APP_VERSION="', r'APP_LAST_RELEASE_DATE="', v)
 
 def patch(filename, version_regexp, release_date_regexp, version_object):
 	try:

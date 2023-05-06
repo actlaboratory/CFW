@@ -4,6 +4,9 @@
 #Copyright (C) 2019-2021 yamahubuki <itiro.ishino@gmail.com>
 
 import winsound
+import datetime
+import time
+import pytz
 import faulthandler
 import pyperclip
 from api.classroom_users import UserCache
@@ -165,9 +168,11 @@ class MainView(BaseView):
 		for announcement in self.announcements:
 			self.text = announcement["text"]
 			updatetime = announcement["updateTime"]
+			iso_time = datetime.datetime.fromisoformat(updatetime.replace("Z", "+00:00"))
+			data = iso_time + datetime.timedelta(seconds=time.timezone*-1)
 			#お知らせ投稿者表示
 			name = announcement["creatorUserId"]
-			self.announcementList.append((self.text, updatetime, name))
+			self.announcementList.append((self.text, data, name))
 			#添付ファイルと一緒に投稿されたお知らせへの対応
 			materials = []
 			if "materials" in announcement:

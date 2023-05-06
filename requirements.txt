@@ -1,7 +1,11 @@
 ﻿wxpython==4.1.1
 pywin32
 winpaths
-google-api-python-client == 1.10
+google-api-python-client == 1.8.4
+google-auth==1.14.1
+google-api-core==1.17.0
+googleapis-common-protos==1.51.0
+protobuf==3.11.3
 pyinstaller==5.3
 requests_oauthlib
 pyperclip
