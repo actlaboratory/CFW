@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: CFW\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 12:46+0900\n"
+"POT-Creation-Date: 2023-05-06 14:36+0900\n"
 "PO-Revision-Date: 2023-04-27 12:15+0900\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -134,7 +134,7 @@ msgid "終了(&X)"
 msgstr ""
 
 #: update.py:50 update.py:59 update.py:73 update.py:79 update.py:90
-#: update.py:98 update.py:103 update.py:108 update.py:160
+#: update.py:98 update.py:103 update.py:108 update.py:137 update.py:167
 #: views\updateDialog.py:39
 msgid "アップデート"
 msgstr ""
@@ -177,7 +177,16 @@ msgstr ""
 msgid "アップデーターが登録されていません。開発者に連絡してください。"
 msgstr ""
 
-#: update.py:160
+#: update.py:137
+#, python-format
+msgid ""
+"アップデートのダウンロード中にエラーが発生しました。\n"
+"しばらくたってから再度お試しください。\n"
+"この問題が繰り返し発生する場合は、開発者までご連絡ください。\n"
+"詳細：%s"
+msgstr ""
+
+#: update.py:167
 msgid ""
 "ダウンロードが完了しました。\n"
 "ソフトウェア終了時に、自動でアップデートされます。"
@@ -206,7 +215,7 @@ msgstr ""
 
 #: views\announcementDialog.py:36 views\authorizing.py:34
 #: views\KeyValueSettingDialogBase.py:84 views\KeyValueSettingDialogBase.py:275
-#: views\settingsDialog.py:84 views\SimpleInputDialog.py:40
+#: views\settingsDialog.py:86 views\SimpleInputDialog.py:40
 #: views\updateDialog.py:45
 msgid "キャンセル"
 msgstr ""
@@ -263,7 +272,7 @@ msgstr ""
 
 #: views\base.py:117 views\fontManager.py:25 views\fontManager.py:50
 #: views\globalKeyConfig.py:61 views\KeyValueSettingDialogBase.py:297
-#: views\KeyValueSettingDialogBase.py:348 views\main.py:317
+#: views\KeyValueSettingDialogBase.py:348 views\main.py:316
 #: views\updateDialog.py:66
 msgid "エラー"
 msgstr ""
@@ -289,7 +298,7 @@ msgstr ""
 msgid "識別子"
 msgstr ""
 
-#: views\globalKeyConfig.py:31 views\main.py:353
+#: views\globalKeyConfig.py:31 views\main.py:352
 msgid "ショートカットキーの設定"
 msgstr ""
 
@@ -298,7 +307,7 @@ msgstr ""
 #: views\globalKeyConfig.py:120 views\globalKeyConfig.py:128
 #: views\globalKeyConfig.py:138 views\globalKeyConfig.py:143
 #: views\keyConfig.py:57 views\KeyValueSettingDialogBase.py:333
-#: views\main.py:412 views\main.py:424
+#: views\main.py:411 views\main.py:423
 msgid "なし"
 msgstr ""
 
@@ -432,95 +441,95 @@ msgid ""
 "す。\n"
 msgstr ""
 
-#: views\main.py:70
+#: views\main.py:69
 msgid "通信に失敗しました。インターネット接続を確認してください。"
 msgstr ""
 
-#: views\main.py:74
+#: views\main.py:73
 msgid "クラス一覧"
 msgstr ""
 
-#: views\main.py:75
+#: views\main.py:74
 msgid "クラス名"
 msgstr ""
 
-#: views\main.py:152
+#: views\main.py:151
 msgid "お知らせ一覧"
 msgstr ""
 
-#: views\main.py:153
+#: views\main.py:152
 msgid "お知らせ"
 msgstr ""
 
-#: views\main.py:154
+#: views\main.py:153
 msgid "作成日"
 msgstr ""
 
-#: views\main.py:155
+#: views\main.py:154
 msgid "更新者"
 msgstr ""
 
-#: views\main.py:194
+#: views\main.py:193
 msgid "クラスへの連絡事項を入力"
 msgstr ""
 
-#: views\main.py:221
+#: views\main.py:220
 msgid "不明なファイル"
 msgstr ""
 
-#: views\main.py:232
+#: views\main.py:231
 msgid "説明"
 msgstr ""
 
-#: views\main.py:237
+#: views\main.py:236
 msgid ""
 "利用可能なアカウントが見つかりませんでした。ファイルメニューから認証を実行し"
 "てください。"
 msgstr ""
 
-#: views\main.py:280
+#: views\main.py:279
 msgid "ファイル(&F)"
 msgstr ""
 
-#: views\main.py:281
+#: views\main.py:280
 msgid "オプション(&O)"
 msgstr ""
 
-#: views\main.py:282
+#: views\main.py:281
 msgid "ヘルプ(&H)"
 msgstr ""
 
-#: views\main.py:309 views\main.py:311 views\main.py:313 views\main.py:315
+#: views\main.py:308 views\main.py:310 views\main.py:312 views\main.py:314
 msgid "認証結果"
 msgstr ""
 
-#: views\main.py:309
+#: views\main.py:308
 msgid "キャンセルしました。"
 msgstr ""
 
-#: views\main.py:311
+#: views\main.py:310
 msgid ""
 "認証に成功しましたが、ファイルの保存に失敗しました。ディレクトリのアクセス権"
 "限などを確認してください。"
 msgstr ""
 
-#: views\main.py:313
+#: views\main.py:312
 msgid "ブラウザが閉じられたため、認証をキャンセルしました。"
 msgstr ""
 
-#: views\main.py:315
+#: views\main.py:314
 msgid "認証が拒否されました。"
 msgstr ""
 
-#: views\main.py:317
+#: views\main.py:316
 msgid "不明なエラーが発生しました。"
 msgstr ""
 
-#: views\main.py:386
+#: views\main.py:385
 msgid "url"
 msgstr ""
 
-#: views\main.py:386
+#: views\main.py:385
 msgid "リンク先のコピーが完了しました。"
 msgstr ""
 
@@ -560,47 +569,47 @@ msgstr ""
 msgid "起動時にウィンドウを隠す(&H)"
 msgstr ""
 
-#: views\settingsDialog.py:64
+#: views\settingsDialog.py:65
 msgid "終了時にタスクトレイに最小化(&M)"
 msgstr ""
 
-#: views\settingsDialog.py:65
+#: views\settingsDialog.py:67
 msgid "ログ記録レベル(&L)"
 msgstr ""
 
-#: views\settingsDialog.py:68
+#: views\settingsDialog.py:70
 msgid "表示/言語"
 msgstr ""
 
-#: views\settingsDialog.py:69
+#: views\settingsDialog.py:71
 msgid "言語(&L)"
 msgstr ""
 
-#: views\settingsDialog.py:70
+#: views\settingsDialog.py:72
 msgid "画面表示モード(&D)"
 msgstr ""
 
-#: views\settingsDialog.py:71
+#: views\settingsDialog.py:73
 msgid "テキストの折り返し(&W)"
 msgstr ""
 
-#: views\settingsDialog.py:74
+#: views\settingsDialog.py:76
 msgid "ネットワーク"
 msgstr ""
 
-#: views\settingsDialog.py:75
+#: views\settingsDialog.py:77
 msgid "起動時に更新を確認(&U)"
 msgstr ""
 
-#: views\settingsDialog.py:76
+#: views\settingsDialog.py:78
 msgid "プロキシサーバーの情報を手動で設定する(&M)"
 msgstr ""
 
-#: views\settingsDialog.py:77
+#: views\settingsDialog.py:79
 msgid "サーバーURL"
 msgstr ""
 
-#: views\settingsDialog.py:79
+#: views\settingsDialog.py:81
 msgid "ポート番号"
 msgstr ""
 
