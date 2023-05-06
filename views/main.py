@@ -5,6 +5,7 @@
 
 import winsound
 import datetime
+import time
 import pytz
 import faulthandler
 import pyperclip
@@ -167,13 +168,11 @@ class MainView(BaseView):
 		for announcement in self.announcements:
 			self.text = announcement["text"]
 			updatetime = announcement["updateTime"]
-			dt = datetime.datetime.fromisoformat(updatetime.replace('Z', '+00:00'))  #isoフォーマットから変換
-			jst = pytz.timezone('Asia/Tokyo')  #jstの時刻を取得
-			dt_jst = dt.astimezone(jst)
-			result = str(dt_jst.strftime("%Y/%m/%d %H:%M"))  #取得した時刻をstrに変換
+			iso_time = datetime.datetime.fromisoformat(updatetime.replace("Z", "+00:00"))
+			data = iso_time + datetime.timedelta(seconds=time.timezone*-1)
 			#お知らせ投稿者表示
 			name = announcement["creatorUserId"]
-			self.announcementList.append((self.text, result, name))
+			self.announcementList.append((self.text, data, name))
 			#添付ファイルと一緒に投稿されたお知らせへの対応
 			materials = []
 			if "materials" in announcement:
