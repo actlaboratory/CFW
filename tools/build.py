@@ -37,6 +37,8 @@ class build:
 		# パッケージのパスとファイル名を決定
 		package_path = os.path.join("dist", os.path.splitext(os.path.basename(constants.STARTUP_FILE))[0])
 		if 'APPVEYOR_REPO_TAG_NAME' in os.environ:
+			if constants.APP_VERSION != os.environ["APPVEYOR_REPO_TAG_NAME"]:
+				raise exception("ソフトウェアのバージョンとタグが一致しません。bumpupの漏れなどがないか確認してください。")
 			build_filename = os.environ['APPVEYOR_REPO_TAG_NAME']
 		else:
 			build_filename = 'snapshot'
