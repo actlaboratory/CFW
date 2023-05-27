@@ -157,6 +157,8 @@ class MainView(BaseView):
 		self.announcementList.AppendColumn(_("更新者"), width=200)
 
 	def showannouncements(self, courseId):
+		#お知らせのidを保存するリスト
+		self.id = []
 		self.menu.hMenuBar.Enable(menuItemsStore.getRef("file_class_update"), False)
 		response = self.getService().courses().announcements().list(courseId=courseId).execute()
 		announcements = response.get("announcements", [])
@@ -166,6 +168,7 @@ class MainView(BaseView):
 
 		self.announcementData = []
 		for announcement in self.announcements:
+			self.id.append(announcement["id"])
 			self.text = announcement["text"]
 			updatetime = announcement["updateTime"]
 			iso_time = datetime.datetime.fromisoformat(updatetime.replace("Z", "+00:00"))
@@ -235,6 +238,15 @@ class MainView(BaseView):
 	def description_data(self):
 		self.DSCBOX, label = self.creator.inputbox(_("説明"), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_PROCESS_ENTER)
 		return
+
+	def dlt_announcements(self, courseId, announcementId):
+		try:
+			response = self.getService().courses().announcements().delete(courseId=courseId, id=announcementId).execute()
+			if not response:
+				self.announcementList.DeleteItem(self.announcementList.GetFocusedItem())
+		except Exception as error:
+			#raise error
+			errorDialog(_("このお知らせを削除する権限がありません。"))
 
 	def getService(self):
 		if not self.app.credentialManager.isOK():
@@ -347,10 +359,21 @@ class Events(BaseEvents):
 			detail.Initialize()
 			detail.Show()
 			return
+
 		if selected == menuItemsStore.getRef("OPTION_OPTION"):
 			d = settingsDialog.Dialog()
 			d.Initialize()
 			d.Show()
+			return
+
+		if selected == menuItemsStore.getRef("dlt_announcement"):
+			if self.parent.announcementList.GetFocusedItem() < 0:
+				return
+			id = self.parent.id[self.parent.announcementList.GetFocusedItem()]
+			message = yesNoDialog(_("確認"), _("選択中のお知らせを削除しますか？"))
+			if message == wx.ID_NO:
+				return
+			self.parent.dlt_announcements(self.courseId, id)
 			return
 
 		if selected == menuItemsStore.getRef("OPTION_KEY_CONFIG"):
@@ -516,6 +539,7 @@ class Events(BaseEvents):
 		self.parent.menu.RegisterMenuCommand(context, "url_copy",subMenu=copySubMenu)
 		self.parent.menu.RegisterMenuCommand(context, "tempFile_open", subMenu=tmp)
 		self.parent.menu.RegisterMenuCommand(context, "view_announcements")
+		self.parent.menu.RegisterMenuCommand(context, "dlt_announcement")
 		for i,j in zip(urlLists, range(len(urlLists))):
 			self.i = i
 			openSubMenu.Append(constants.MENU_URL_OPEN + j,i)

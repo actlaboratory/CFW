@@ -9,6 +9,7 @@ defaultKeymap["mainView"]={
 	"file_back":"Back",
 	"file_class_update":"ctrl+shift+f5",
 	"view_announcements":"alt+return",
+	"dlt_announcement":"DELETE",
 	"OPTION_OPTION":"",
 	"OPTION_KEY_CONFIG":"",
 
