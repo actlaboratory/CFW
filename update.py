@@ -128,33 +128,25 @@ class update(threading.Thread):
 			self.log.info("updater not found")
 			os.remove(self._file_name)			
 			self.dialog.updater_notFound()
+		
 
 	def run(self):
-		try:
-			self._run()
-		except Exception as e:
-			self.log.error(traceback.format_exc())
-			simpleDialog.winDialog(_("アップデート"), _("アップデートのダウンロード中にエラーが発生しました。\nしばらくたってから再度お試しください。\nこの問題が繰り返し発生する場合は、開発者までご連絡ください。\n詳細：%s") % e)
-			wx.CallAfter(self.dialog.end)
-
-	def _run(self):
 		self.log.info("downloading update file...")
 		url = self.info["updater_url"]
 		self._file_name = "update_file.zip"
 		response = requests.get(url, stream = True)
 		total_size = int(response.headers["Content-Length"])
-		wx.CallAfter(self.dialog.gauge.SetRange, (total_size))
+		wx.CallAfter(self.dialog.gauge.SetRange, (int)(total_size/100))
 		now_size = 0
 		broken = False
 		with open(self._file_name, mode="wb") as f:
 			for chunk in response.iter_content(chunk_size = 1024):
 				if self.needStop:
 					broken = True
-					print("broken!")
 					break
 				f.write(chunk)
 				now_size += len(chunk)
-				wx.CallAfter(self.dialog.gauge.SetValue, (now_size))
+				wx.CallAfter(self.dialog.gauge.SetValue, (int)(now_size/100))
 				wx.YieldIfNeeded()
 		if broken:
 			self.log.info("downloading update file has canceled by user")

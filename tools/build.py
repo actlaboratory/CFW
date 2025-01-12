@@ -37,8 +37,6 @@ class build:
 		# パッケージのパスとファイル名を決定
 		package_path = os.path.join("dist", os.path.splitext(os.path.basename(constants.STARTUP_FILE))[0])
 		if 'APPVEYOR_REPO_TAG_NAME' in os.environ:
-			if constants.APP_VERSION != os.environ["APPVEYOR_REPO_TAG_NAME"]:
-				raise exception("ソフトウェアのバージョンとタグが一致しません。bumpupの漏れなどがないか確認してください。")
 			build_filename = os.environ['APPVEYOR_REPO_TAG_NAME']
 		else:
 			build_filename = 'snapshot'
@@ -59,7 +57,7 @@ class build:
 			exit(-1)
 
 		# 前のビルドをクリーンアップ
-		self.creen(package_path)
+		self.clean(package_path)
 
 		# appveyorでのスナップショットの場合はバージョン番号を一時的に書き換え
 		if build_filename == "snapshot" and appveyor:
@@ -90,7 +88,7 @@ class build:
 			return True
 		return False
 
-	def creen(self,package_path):
+	def clean(self,package_path):
 		if os.path.isdir(package_path):
 			print("Clearling previous build...")
 			shutil.rmtree("dist\\")
